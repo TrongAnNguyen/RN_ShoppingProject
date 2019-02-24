@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, Dimensions, 
         ImageBackground, TouchableOpacity } from 'react-native';
 import SwiperFlatList from 'react-native-swiper-flatlist';
+import { connect } from 'react-redux';
+import * as Actions from './../../../../actions/action';
 
 const { width, height } = Dimensions.get('window');
 const maxi = require('./../../../../media/temp/maxi.jpg');
@@ -16,7 +18,7 @@ const listCategory = [
     { name: 'little', image: little }
 ];
 
-export default class Category extends Component {
+class Category extends Component {
     renderListCatogory = () => {
         const { imageStyle, titleStyle } = styles;
         const result = listCategory.map((category) => 
@@ -95,3 +97,17 @@ const styles = StyleSheet.create({
         color: '#a4a9ad'
     }
 });
+
+function mapStateToProps(state) {
+    return {
+        product: state.product
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        //fetchData: () => dispatch(Actions.fetchData())
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category);

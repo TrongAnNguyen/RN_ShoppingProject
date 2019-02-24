@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "react": "16.6.1",
     "react-native": "0.57.5",
     "react-native-drawer": "^2.5.1",
@@ -15,7 +16,10 @@
     "react-native-swiper-flatlist": "^1.0.8",
     "react-native-tab-navigator": "^0.3.4",
     "react-navigation": "^2.18.2",
-    "react-navigation-transitions": "^1.0.5"
+    "react-navigation-transitions": "^1.0.5",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",

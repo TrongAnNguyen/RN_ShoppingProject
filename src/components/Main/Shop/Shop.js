@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import TabNavigator from 'react-native-tab-navigator';
 import { View, Image, StyleSheet, Dimensions } from 'react-native';
+import { connect } from 'react-redux';
+import * as Actions from './../../../actions/action';
 import Cart from './Cart/Cart';
 import Search from './Search/Search';
 import Home from './Home/Home';
@@ -18,16 +20,17 @@ const contactSIcon = require('./../../../media/appIcon/contact.png');
 
 const { height, width } = Dimensions.get('window');
 
-export default class Shop extends Component {
+class Shop extends Component {
     constructor(props) {
         super(props);
         this.state = {
             selectedTab: 'Home'
         };
     }
-    
+
     render() {
         const { iconStyle, titleStyle } = styles;
+        const { selectedTab } = this.state;
         const listTabBar = [
             {
                 title: 'Home',
@@ -61,7 +64,7 @@ export default class Shop extends Component {
         const tabItems = listTabBar.map((tab, index) => 
             <TabNavigator.Item
                 key={index}
-                selected={this.state.selectedTab === tab.title}
+                selected={selectedTab === tab.title}
                 title={tab.title}
                 renderIcon={() => <Image source={tab.icon} style={iconStyle} />}
                 renderSelectedIcon={() => <Image source={tab.selectedIcon} style={iconStyle} />}
@@ -92,3 +95,11 @@ const styles = StyleSheet.create({
         color: '#34b089'
     }
 });
+
+function mapDispatchToProps(dispatch) {
+    return {
+        fetchProductType: () => dispatch(Actions.fetchProductType())
+    };
+}
+
+export default connect(null, mapDispatchToProps)(Shop);
