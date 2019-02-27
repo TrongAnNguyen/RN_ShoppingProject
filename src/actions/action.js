@@ -15,11 +15,24 @@ export function getProductTypeSuccess(data) {
     };
 }
 
-export function getDataFailure() {
+export function getTopProduct() {
     return {
-        type: ActionTypes.FETCHING_DATA_FAILURE
+        type: ActionTypes.FETCHING_TOP_PRODUCT
     };
 }
+
+export function getTopProductSuccess(data) {
+    return {
+        type: ActionTypes.FETCHING_TOP_PRODUCT_SUCCESS,
+        data
+    };
+}
+
+// export function getDataFailure() {
+//     return {
+//         type: ActionTypes.FETCHING_DATA_FAILURE
+//     };
+// }
 
 export function fetchProductType() {
     return (dispatch) => {
@@ -29,5 +42,16 @@ export function fetchProductType() {
             dispatch(getProductTypeSuccess(result.data));
         })
         .catch(error => console.log(`Error while fetching product/alltype: ${error}`));
+    };
+}
+
+export function fetchTopProduct() {
+    return (dispatch) => {
+        dispatch(getTopProduct());
+        axios.get(`${serverURL}/product/top`)
+        .then(result => {
+            dispatch(getTopProductSuccess(result.data));
+        })
+        .catch(error => console.log(`Error while fetching product/top: ${error}`));
     };
 }

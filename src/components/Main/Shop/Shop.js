@@ -28,6 +28,10 @@ class Shop extends Component {
         };
     }
 
+    componentDidMount() {
+        this.props.fetchProductType();
+    }
+    
     render() {
         const { iconStyle, titleStyle } = styles;
         const { selectedTab } = this.state;
@@ -98,7 +102,9 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchProductType: () => dispatch(Actions.fetchProductType())
+        fetchProductType: () => dispatch(Actions.fetchProductType()),
+        fetchTopProduct: () => dispatch(Actions.fetchTopProduct())
+
     };
 }
 

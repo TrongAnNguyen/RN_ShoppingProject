@@ -4,30 +4,22 @@ import { Text, View, StyleSheet, Dimensions,
 import SwiperFlatList from 'react-native-swiper-flatlist';
 import { connect } from 'react-redux';
 import * as Actions from './../../../../actions/action';
+import { serverURL } from './../../../../constants/config';
 
 const { width, height } = Dimensions.get('window');
-const maxi = require('./../../../../media/temp/maxi.jpg');
-const midi = require('./../../../../media/temp/midi.jpg');
-const party = require('./../../../../media/temp/party.jpg');
-const little = require('./../../../../media/temp/little.jpg');
-
-const listCategory = [
-    { name: 'maxi', image: maxi },
-    { name: 'midi', image: midi },
-    { name: 'party', image: party },
-    { name: 'little', image: little }
-];
+const imgUrl = `${serverURL}/product/image/type/`;
 
 class Category extends Component {
     renderListCatogory = () => {
         const { imageStyle, titleStyle } = styles;
+        const listCategory = this.props.productTypes.data;
         const result = listCategory.map((category) => 
             <TouchableOpacity 
                 onPress={() => this.props.navigation.navigate('ListProduct')}
-                key={category.name}
+                key={category.id}
             >
                 <ImageBackground 
-                    source={category.image} 
+                    source={{ uri: `${imgUrl}${category.image}` }} 
                     style={imageStyle}
                 >
                     <Text style={titleStyle}>{category.name}</Text>
@@ -100,7 +92,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        product: state.product
+        productTypes: state.product.allTypes
     };
 }
 
