@@ -1,70 +1,82 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet, Image,
-    FlatList, Dimensions, Text
+    FlatList, Dimensions, Text, ScrollView
 } from 'react-native';
+import { connect } from 'react-redux';
 
-import img1 from './../../../../media/temp/sp4.jpeg';
-import img2 from './../../../../media/temp/sp5.jpeg';
+import { serverURL } from './../../../../constants/config';
+
+const imgUrl = `${serverURL}/product/image/`;
 
 const icBack = require('./../../../../media/appIcon/back.png');
 const icCartFull = require('./../../../../media/appIcon/cartfull.png');
 
-export default class ProductDetail extends Component {
-    keyExtractor = (item) => item.id.toString();
+class ProductDetail extends Component {
+    keyExtractor = (item) => item;
 
     render() {
         const { container, header, iconStyle, productImageStyle, productContainer,
                 titleName, titleContainer, titleHighlight, titlePrice, descriptionHeader, hrStyle,
                 lastRowStyle, description, colorInfo, color, txtColor, txtMaterial
         } = styles;
-        const data = [{ img: img1, id: 1 }, { img: img2, id: 2 }];
+        const { navigation } = this.props;
+        const product = navigation.getParam('product', null);
+
         return (
-            <View style={container}>
-                <View style={header}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                        <Image 
-                            source={icBack} 
-                            style={iconStyle}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image 
-                            source={icCartFull} 
-                            style={iconStyle}
-                        />
-                    </TouchableOpacity>
-                </View>
-                <View style={productContainer}>
-                    <View>
-                        <FlatList 
-                            data={data}
-                            keyExtractor={this.keyExtractor}
-                            horizontal
-                            renderItem={({ item }) => (
-                                <Image source={item.img} style={productImageStyle} />
-                            )}
-                        />
+            <ScrollView>
+                <View style={container}>
+                    <View style={header}>
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <Image 
+                                source={icBack} 
+                                style={iconStyle}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Image 
+                                source={icCartFull} 
+                                style={iconStyle}
+                            />
+                        </TouchableOpacity>
                     </View>
-                    <View style={descriptionHeader}>
-                        <View style={titleContainer}>
-                            <Text style={titleName}>{'Black off the'.toUpperCase()}</Text>
-                            <Text style={titleHighlight}>/</Text>
-                            <Text style={titlePrice}>124$</Text>
-                        </View>
-                        <View style={hrStyle} />
-                    </View>
-                    <View style={description}>
-                        <Text>A delicate layer of eyelash lace brings dreamy elegance to this piece, while smooth, lightweight lining feels luxurious against your skin. We love it with heels for a look that fits in on date night, or with cool booties to add an edge.</Text>
-                        <View style={lastRowStyle}>
-                            <Text style={txtMaterial}>Material leather</Text>
-                            <View style={colorInfo}>
-                                <Text style={txtColor}>Color Khaki</Text>
-                                <View style={[color, { backgroundColor: '#C21C70' }]} />
+                    {
+                        product !== null ? 
+                        (<View style={productContainer}>
+                            <View>
+                                <FlatList 
+                                    data={product.images}
+                                    keyExtractor={this.keyExtractor}
+                                    horizontal
+                                    renderItem={({ item }) => (
+                                        <Image 
+                                            source={{ uri: `${imgUrl}${item}` }} 
+                                            style={productImageStyle} 
+                                        />
+                                    )}
+                                />
                             </View>
-                        </View>
-                    </View>
+                            <View style={descriptionHeader}>
+                                <View style={titleContainer}>
+                                    <Text style={titleName}>{product.name.toUpperCase()}</Text>
+                                    <Text style={titleHighlight}>/</Text>
+                                    <Text style={titlePrice}>{product.price}$</Text>
+                                </View>
+                                <View style={hrStyle} />
+                            </View>
+                            <View style={description}>
+                                <Text>{product.description}</Text>
+                                <View style={lastRowStyle}>
+                                    <Text style={txtMaterial}>Material {product.material}</Text>
+                                    <View style={colorInfo}>
+                                        <Text style={txtColor}>Color {product.color}</Text>
+                                        <View style={[color, { backgroundColor: '#C21C70' }]} />
+                                    </View>
+                                </View>
+                            </View>
+                        </View>) : null
+                    }
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 }
@@ -158,3 +170,11 @@ const styles = StyleSheet.create({
         //fontFamily: 'Avenir'
     }
 });
+
+function mapStateToProps(state) {
+    return {
+        
+    };
+}
+
+export default connect()(ProductDetail);

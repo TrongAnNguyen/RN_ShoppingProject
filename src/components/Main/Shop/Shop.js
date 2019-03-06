@@ -30,6 +30,7 @@ class Shop extends Component {
 
     componentDidMount() {
         this.props.fetchProductType();
+        this.props.fetchTopProduct();
     }
     
     render() {

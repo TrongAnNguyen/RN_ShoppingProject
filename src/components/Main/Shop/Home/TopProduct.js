@@ -1,52 +1,24 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, FlatList, 
          Dimensions, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { serverURL } from './../../../../constants/config';
 
-const product1 = require('./../../../../media/temp/sp1.jpeg');
-const product2 = require('./../../../../media/temp/sp2.jpeg');
-const product3 = require('./../../../../media/temp/sp3.jpeg');
-const product4 = require('./../../../../media/temp/sp4.jpeg');
-const product5 = require('./../../../../media/temp/sp5.jpeg');
+const imgUrl = `${serverURL}/product/image/`;
 
-const data = [
-    {
-        image: product1,
-        title: 'BLACK OFF THE 1',
-        price: '124$'
-    },
-    {
-        image: product2,
-        title: 'BLACK OFF THE 2',
-        price: '124$'
-    },
-    {
-        image: product3,
-        title: 'BLACK OFF THE 3',
-        price: '124$'
-    },
-    {
-        image: product4,
-        title: 'BLACK OFF THE 4',
-        price: '124$'
-    },
-    {
-        image: product5,
-        title: 'BLACK OFF THE 5',
-        price: '124$'
-    },
-];
-
-export default class TopProduct extends Component {
+class TopProduct extends Component {
     renderItem = ({ item }) => {
         const { items, productDetail, productTitleStyle, productPriceStyle, imageStyle } = styles;
         const { navigation } = this.props;
-
+        
         return (
             <View style={[items, { elevation: 2 }]}>
-                <TouchableOpacity onPress={() => navigation.navigate('ProductDetail')}>
-                    <Image source={item.image} style={imageStyle} />
+                <TouchableOpacity 
+                    onPress={() => navigation.navigate('ProductDetail', { product: item })}
+                >
+                    <Image source={{ uri: `${imgUrl}${item.images[0]}` }} style={imageStyle} />
                     <View style={productDetail}>
-                        <Text style={productTitleStyle}>{item.title}</Text>
+                        <Text style={productTitleStyle}>{item.name.toUpperCase()}</Text>
                         <Text style={productPriceStyle}>{item.price}</Text>
                     </View>
                 </TouchableOpacity>
@@ -56,18 +28,22 @@ export default class TopProduct extends Component {
 
     render() {
         const { wrapper, titleWrapper, textStyle, shadow, listStyle } = styles;
+        const { data } = this.props.topProduct;
+
         return (
             <View style={[wrapper, shadow]}>
                 <View style={titleWrapper}>
                     <Text style={textStyle}>TOP PRODUCT</Text>
                 </View>
-                <FlatList 
-                    data={data}
-                    style={listStyle}
-                    renderItem={this.renderItem}
-                    numColumns={2}
-                    keyExtractor={item => item.title}
-                />
+                {
+                    data.length ? (<FlatList 
+                        data={data}
+                        style={listStyle}
+                        renderItem={this.renderItem}
+                        numColumns={2}
+                        keyExtractor={item => item.id}
+                    />) : null
+                }
             </View>
         );
     }
@@ -124,3 +100,12 @@ const styles = StyleSheet.create({
         color: '#a0033f'
     }
 });
+
+function mapStateToProps(state) {
+    return {
+        topProduct: state.product.topProduct
+    };
+}
+
+
+export default connect(mapStateToProps, null)(TopProduct);
