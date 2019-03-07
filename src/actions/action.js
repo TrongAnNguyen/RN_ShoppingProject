@@ -55,3 +55,31 @@ export function fetchTopProduct() {
         .catch(error => console.log(`Error while fetching product/top: ${error}`));
     };
 }
+
+export function addToCart(product) {
+    return {
+        type: ActionTypes.ADD_TO_CART,
+        product
+    };
+}
+
+export function removeFromCart(productId) {
+    return {
+        type: ActionTypes.REMOVE_FROM_CART,
+        productId
+    };
+}
+
+export function increaseQuantity(productId) {
+    return {
+        type: ActionTypes.INCREASE_QUANTITY,
+        productId
+    };
+}
+
+export function decreaseQuantity(productId) {
+    return {
+        type: ActionTypes.DECREASE_QUANTITY,
+        productId
+    };
+}

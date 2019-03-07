@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
 import CartItem from './CartItem';
 
 export default class CartView extends Component {
@@ -48,3 +49,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     }
 });
+

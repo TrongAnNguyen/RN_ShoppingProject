@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet, Image,
-    FlatList, Dimensions, Text, ScrollView
-} from 'react-native';
+        FlatList, Dimensions, Text, ScrollView
+    } from 'react-native';
 import { connect } from 'react-redux';
-
+import * as Actions from './../../../../actions/action';
 import { serverURL } from './../../../../constants/config';
 
 const imgUrl = `${serverURL}/product/image/`;
@@ -12,6 +12,11 @@ const icBack = require('./../../../../media/appIcon/back.png');
 const icCartFull = require('./../../../../media/appIcon/cartfull.png');
 
 class ProductDetail extends Component {
+    addToCart = (product) => {
+        if (product == null) return;
+        this.props.addToCart(product);
+    }
+    
     keyExtractor = (item) => item;
 
     render() {
@@ -32,7 +37,7 @@ class ProductDetail extends Component {
                                 style={iconStyle}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.addToCart(product)}>
                             <Image 
                                 source={icCartFull} 
                                 style={iconStyle}
@@ -177,4 +182,10 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect()(ProductDetail);
+function mapDispatchToProps(dispatch) {
+    return {
+        addToCart: (product) => dispatch(Actions.addToCart(product))
+    };
+}
+
+export default connect(null, mapDispatchToProps)(ProductDetail);
