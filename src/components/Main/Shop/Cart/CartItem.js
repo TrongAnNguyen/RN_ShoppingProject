@@ -1,35 +1,40 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
+import { connect } from 'react-redux';
+import { serverURL } from './../../../../constants/config';
+import * as Actions from './../../../../actions/action';
 
-import sp1 from './../../../../media/temp/sp1.jpeg';
+const imgUrl = `${serverURL}/product/image/`;
 
-export default class CartItem extends Component {
+class CartItem extends Component {
     render() {
         const { container, imageStyle, titleWrapper, productContainer, productQuantity, 
                 productController, txtName, txtPrice, txtShowDetail } = styles;
-        const { navigation } = this.props;
+        const { navigation, item } = this.props;
         return (
             <View style={container}>
-                <Image source={sp1} style={imageStyle} />
+                <Image source={{ uri: `${imgUrl}${item.images[0]}` }} style={imageStyle} />
                 <View style={productContainer}>
                     <View style={titleWrapper}>
-                        <Text style={txtName}>Lace Sleeve Si</Text>
-                        <TouchableOpacity>
+                        <Text style={txtName}>{item.name.toUpperCase()}</Text>
+                        <TouchableOpacity onPress={() => this.props.removeFromCart(item.id)}>
                             <Text>X</Text>
                         </TouchableOpacity>
                     </View>
-                    <Text style={txtPrice}>117$</Text>
+                    <Text style={txtPrice}>{item.price}$</Text>
                     <View style={productController}>
                         <View style={productQuantity}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.props.increaseQuantity(item.id)}>
                                 <Text>+</Text>
                             </TouchableOpacity>
-                            <Text>1</Text>
-                            <TouchableOpacity>
+                            <Text>{item.quantity}</Text>
+                            <TouchableOpacity onPress={() => this.props.decreaseQuantity(item.id)}>
                                 <Text>-</Text>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('ProductDetail')}>
+                        <TouchableOpacity 
+                            onPress={() => navigation.navigate('ProductDetail', { product: item })}
+                        >
                             <Text style={txtShowDetail}>Show Detail</Text>
                         </TouchableOpacity>
                     </View>
@@ -98,3 +103,13 @@ const styles = StyleSheet.create({
         textAlign: 'right',
     },
 });
+
+function mapDispatchToProps(dispatch) {
+    return {
+        removeFromCart: (productId) => dispatch(Actions.removeFromCart(productId)),
+        increaseQuantity: (productId) => dispatch(Actions.increaseQuantity(productId)),
+        decreaseQuantity: (productId) => dispatch(Actions.decreaseQuantity(productId))
+    };
+}
+
+export default connect(null, mapDispatchToProps)(CartItem);

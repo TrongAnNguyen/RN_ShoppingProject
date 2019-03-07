@@ -1,26 +1,41 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import lang from 'lodash/lang';
 import CartItem from './CartItem';
+import * as Actions from './../../../../actions/action';
 
-export default class CartView extends Component {
+class CartView extends Component {
     gotoDetail = () => {
         const { navigation } = this.props;
         navigation.navigate('ProductDetail');
     }
 
+    renderItem = () => {
+        const { productCart, navigation } = this.props;
+        const cartItems = productCart.items;
+        if (lang.isEmpty(cartItems)) return null;
+        const listItems = Object.keys(cartItems).map(item => cartItems[item]);
+        const listItemsJsx = listItems.map(item => (
+            <CartItem 
+                key={item.id}
+                navigation={navigation}
+                item={item}
+            />
+        ));
+        return listItemsJsx;
+    }
+    
     render() {
         const { container, productWrapper, checkoutTitle, btnCheckout } = styles;
-        const { navigation } = this.props;
+        const { totalPrice } = this.props.productCart;
         return (
             <View style={container}>
                 <ScrollView style={productWrapper}>
-                    <CartItem navigation={navigation} />
-                    <CartItem navigation={navigation} />
-                    <CartItem navigation={navigation} />
+                    {this.renderItem()}
                 </ScrollView>
                 <TouchableOpacity style={btnCheckout}>
-                    <Text style={checkoutTitle}>TOTAL {1000}$ CHECKOUT NOW</Text>
+                    <Text style={checkoutTitle}>TOTAL {totalPrice}$ CHECKOUT NOW</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -50,3 +65,18 @@ const styles = StyleSheet.create({
     }
 });
 
+function mapStateToProps(state) {
+    return {
+        productCart: state.user.productCart
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        removeFromCart: (productId) => dispatch(Actions.removeFromCart(productId)),
+        increaseQuantity: (productId) => dispatch(Actions.increaseQuantity(productId)),
+        decreaseQuantity: (productId) => dispatch(Actions.decreaseQuantity(productId))
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartView);

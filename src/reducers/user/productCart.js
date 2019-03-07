@@ -2,7 +2,10 @@ import { AsyncStorage } from 'react-native';
 import * as ActionTypes from './../../constants/ActionTypes';
 import lang from 'lodash/lang';
 
-const initialState = {};
+const initialState = {
+    items: {},
+    totalPrice: 0
+};
 
 export default function productCart(state = initialState, action) {
     switch (action.type) {
@@ -10,54 +13,78 @@ export default function productCart(state = initialState, action) {
         {
             const { product } = action;
             let newState = null;
-            if (lang.isEmpty(state[product.id])) {  // If not existed, add new
+            if (lang.isEmpty(state.items[product.id])) {  // If not existed, add new
                 newState = {
                     ...state,
-                    [product.id]: {
-                        ...product,
-                        quantity: 1
-                    }
+                    items: {
+                        ...state.items,
+                        [product.id]: {
+                            ...product,
+                            quantity: 1
+                        }
+                    },
+                    totalPrice: state.totalPrice + product.price
                 };
             } else {    // Existed, increase
-                const { [product.id]: curProduct, ...otherObj } = state;
+                const { [product.id]: curProduct, ...otherObj } = state.items;
                 newState = {
-                    ...otherObj,
-                    [product.id]: {
-                        ...curProduct,
-                        quantity: curProduct.quantity + 1
-                    }
+                    ...state,
+                    items: {
+                        ...otherObj,
+                        [product.id]: {
+                            ...curProduct,
+                            quantity: curProduct.quantity + 1
+                        }
+                    },
+                    totalPrice: state.totalPrice + product.price
                 };
             }
             return { ...newState };
         }
         case ActionTypes.REMOVE_FROM_CART:
         {
-            const { [action.productId]: value, ...newState } = state;
+            const { [action.productId]: product, ...otherItems } = state.items;
+            const newState = {
+                ...state,
+                items: {
+                    ...otherItems
+                },
+                totalPrice: state.totalPrice - (product.price * product.quantity)
+            };
             return { ...newState };
         }
         case ActionTypes.INCREASE_QUANTITY:
         {
-            const { [action.productId]: product, ...otherObj } = state;
-            const updatedProduct = {
-                ...otherObj,
-                [action.productId]: { 
-                    ...product, 
-                    quantity: product.quantity + 1
-                }
+            const { [action.productId]: product, ...otherItems } = state.items;
+            const newState = {
+                ...state,
+                items: {
+                    ...otherItems,
+                    [action.productId]: {
+                        ...product,
+                        quantity: product.quantity + 1
+                    }
+                },
+                totalPrice: state.totalPrice + product.price
             };
             
-            return updatedProduct;
+            return newState;
         }
         case ActionTypes.DECREASE_QUANTITY:
         {
-            const { [action.productId]: product, ...otherObj } = state;
+            const { [action.productId]: product, ...otherItems } = state.items;
             const updatedProduct = { ...product };
             if (product.quantity > 1) {
                 updatedProduct.quantity -= 1;
             }
             return {
-                ...otherObj,
-                [action.productId]: { ...updatedProduct }
+                ...state,
+                items: {
+                    ...otherItems,
+                    [action.productId]: updatedProduct
+                },
+                totalPrice: state.totalPrice - (product.price * 
+                    (product.quantity - updatedProduct.quantity)) // keep old price when nothing change
             };
         }
         default:
