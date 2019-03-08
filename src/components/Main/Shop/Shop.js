@@ -36,6 +36,7 @@ class Shop extends Component {
     render() {
         const { iconStyle, titleStyle } = styles;
         const { selectedTab } = this.state;
+        const numberCartItems = Object.keys(this.props.productCart).length;
         const listTabBar = [
             {
                 title: 'Home',
@@ -48,7 +49,7 @@ class Shop extends Component {
                 title: 'Cart',
                 icon: cartIcon,
                 selectedIcon: cartSIcon,
-                badgeText: '1',
+                badgeText: numberCartItems,
                 component: <Cart />
             },
             {
@@ -101,6 +102,12 @@ const styles = StyleSheet.create({
     }
 });
 
+function mapStateToProps(state) {
+    return {
+        productCart: state.user.productCart.items
+    };
+}
+
 function mapDispatchToProps(dispatch) {
     return {
         fetchProductType: () => dispatch(Actions.fetchProductType()),
@@ -109,4 +116,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(Shop);
+export default connect(mapStateToProps, mapDispatchToProps)(Shop);

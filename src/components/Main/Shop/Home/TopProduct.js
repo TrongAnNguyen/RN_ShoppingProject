@@ -19,7 +19,7 @@ class TopProduct extends Component {
                     <Image source={{ uri: `${imgUrl}${item.images[0]}` }} style={imageStyle} />
                     <View style={productDetail}>
                         <Text style={productTitleStyle}>{item.name.toUpperCase()}</Text>
-                        <Text style={productPriceStyle}>{item.price}</Text>
+                        <Text style={productPriceStyle}>{item.price}$</Text>
                     </View>
                 </TouchableOpacity>
             </View>

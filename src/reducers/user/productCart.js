@@ -7,6 +7,10 @@ const initialState = {
     totalPrice: 0
 };
 
+async function saveCart(productCart) {
+    await AsyncStorage.setItem('@productCart', JSON.stringify(productCart));   
+}
+
 export default function productCart(state = initialState, action) {
     switch (action.type) {
         case ActionTypes.ADD_TO_CART:
@@ -39,6 +43,7 @@ export default function productCart(state = initialState, action) {
                     totalPrice: state.totalPrice + product.price
                 };
             }
+            saveCart(newState);
             return { ...newState };
         }
         case ActionTypes.REMOVE_FROM_CART:
@@ -51,6 +56,7 @@ export default function productCart(state = initialState, action) {
                 },
                 totalPrice: state.totalPrice - (product.price * product.quantity)
             };
+            saveCart(newState);
             return { ...newState };
         }
         case ActionTypes.INCREASE_QUANTITY:
@@ -67,7 +73,7 @@ export default function productCart(state = initialState, action) {
                 },
                 totalPrice: state.totalPrice + product.price
             };
-            
+            saveCart(newState);
             return newState;
         }
         case ActionTypes.DECREASE_QUANTITY:
@@ -77,7 +83,7 @@ export default function productCart(state = initialState, action) {
             if (product.quantity > 1) {
                 updatedProduct.quantity -= 1;
             }
-            return {
+            const newState = {
                 ...state,
                 items: {
                     ...otherItems,
@@ -86,6 +92,12 @@ export default function productCart(state = initialState, action) {
                 totalPrice: state.totalPrice - (product.price * 
                     (product.quantity - updatedProduct.quantity)) // keep old price when nothing change
             };
+            saveCart(newState);
+            return newState;
+        }
+        case ActionTypes.GET_PRODUCT_CART_SUCCESS:
+        {
+            return action.productCart;
         }
         default:
             return state;

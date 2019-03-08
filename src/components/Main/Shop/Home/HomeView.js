@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { View, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
+import * as Actions from './../../../../actions/action';
 import Collection from './Collection';
 import Category from './Category';
 import TopProduct from './TopProduct';
 
-export default class HomeView extends Component {
+class HomeView extends Component {
+    componentDidMount() {
+        this.props.getProductCart();
+    }
+
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: '#dbdbdb' }}>
@@ -17,3 +23,11 @@ export default class HomeView extends Component {
         );
     }
 }
+
+function mapDispatchToProps(dispatch) {
+    return {
+        getProductCart: () => dispatch(Actions.getProductCart())
+    };
+}
+
+export default connect(null, mapDispatchToProps)(HomeView);

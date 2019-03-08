@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import axios from 'axios';
 import * as ActionTypes from './../constants/ActionTypes';
 import { serverURL } from './../constants/config';
@@ -81,5 +82,21 @@ export function decreaseQuantity(productId) {
     return {
         type: ActionTypes.DECREASE_QUANTITY,
         productId
+    };
+}
+
+export function getProductCartSuccess(productCart) {
+    return {
+        type: ActionTypes.GET_PRODUCT_CART_SUCCESS,
+        productCart
+    };
+}
+
+export function getProductCart() {
+    return async (dispatch) => {
+        const productCart = await AsyncStorage.getItem('@productCart');
+        if (productCart !== null) {
+            dispatch(getProductCartSuccess(JSON.parse(productCart)));
+        }
     };
 }
