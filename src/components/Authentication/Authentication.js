@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import * as Actions from './../../actions/action';
 import Header from './Header';
 import Login from './Login';
 import Signup from './Signup';
 import Tabbar from './Tabbar';
 
-export default class Authentication extends Component {
+class Authentication extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,10 +16,13 @@ export default class Authentication extends Component {
     }
     onChangeScreen = (isSignIn) => {
         this.setState({ isSignIn });
+        this.props.clearInput();
     }
 
     renderCurrentScreen = () => {
-        const screen = this.state.isSignIn ? <Login /> : <Signup />;
+        const { navigation } = this.props;
+        const screen = this.state.isSignIn 
+        ? <Login navigation={navigation} /> : <Signup navigation={navigation} />;
         return screen;
     }
 
@@ -44,3 +49,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
 });
+
+function mapDispatchToProps(dispatch) {
+    return {
+        clearInput: () => dispatch(Actions.clearAuthenticateInput())
+    };
+}
+
+export default connect(null, mapDispatchToProps)(Authentication);

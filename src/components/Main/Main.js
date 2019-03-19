@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import Drawer from 'react-native-drawer';
+import { connect } from 'react-redux';
+import * as Actions from './../../actions/action';
 import Menu from './Menu';
 import Shop from './Shop/Shop';
 
-export default class Main extends Component {
+class Main extends Component {
     componentDidMount = () => {
-        //this.drawer.open();
+        this.props.validateToken();
     }
+    
     render() {
         return (
             <Drawer
@@ -20,3 +23,11 @@ export default class Main extends Component {
         );
     }
 }
+
+function mapDispatchToProps(dispatch) {
+    return {
+        validateToken: () => dispatch(Actions.validateToken())
+    };
+}
+
+export default connect(null, mapDispatchToProps)(Main);

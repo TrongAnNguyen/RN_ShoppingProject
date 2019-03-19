@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
+import { connect } from 'react-redux';
+import lang from 'lodash/lang';
+import * as Actions from './../../actions/action';
 
 const avatar = require('./../../media/temp/profile.png');
 
-export default class Menu extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLogged: true
-        };
+class Menu extends Component {
+    handleSignOut = () => {
+        const { navigation, handleLogout } = this.props;
+        handleLogout();
+        navigation.navigate('Authentication');
     }
+    
 
     renderButton = (name, onPress) => {
         const { buttonStyle, btnNameStyle } = styles;
@@ -22,16 +25,16 @@ export default class Menu extends Component {
     }
 
     renderLoggedJSX = () => {
-        const { navigation } = this.props;
+        const { navigation, userFullName } = this.props;
         const { loggedContainer, username, btnContainer } = styles;
 
         return (
             <View style={loggedContainer}>
-                <Text style={username}>Nguyen Trong An</Text>
+                <Text style={username}>{userFullName}</Text>
                 <View style={btnContainer}>
                     {this.renderButton('Order History', () => navigation.navigate('OrderHistory'))}
                     {this.renderButton('Change Info', () => navigation.navigate('ChangeInfo'))}
-                    {this.renderButton('Sign out', () => navigation.navigate('Authentication'))}
+                    {this.renderButton('Sign out', this.handleSignOut)}
                 </View>
             </View>
         );
@@ -48,10 +51,11 @@ export default class Menu extends Component {
 
     render() {
         const { container, avatarStyle } = styles;
+        const { isLogged } = this.props;
         return (
             <View style={container}>
                 <Image source={avatar} style={avatarStyle} />
-                { this.state.isLogged ? this.renderLoggedJSX() : this.renderSigninJSX() }
+                { isLogged ? this.renderLoggedJSX() : this.renderSigninJSX() }
             </View>
         );
     }
@@ -100,3 +104,18 @@ const styles = StyleSheet.create({
         marginBottom: 100
     }
 });
+
+function mapStateToProps(state) {
+    return {
+        isLogged: state.user.authenticate.isLogged,
+        userFullName: state.user.info.fullName
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        handleLogout: () => dispatch(Actions.handleLogout())
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

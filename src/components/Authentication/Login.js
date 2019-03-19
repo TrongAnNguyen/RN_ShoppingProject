@@ -1,24 +1,64 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { 
+    View, Text, TextInput, TouchableOpacity, 
+    StyleSheet, Dimensions, KeyboardAvoidingView 
+} from 'react-native';
+import { connect } from 'react-redux';
+import DropDownHolder from './../DropDownHolder';
+import * as Actions from './../../actions/action';
 
-export default class Login extends Component {
+class Login extends Component {
+    shouldComponentUpdate(nextProps) {
+        const { closeNotification } = this.props;
+        const { notification, isLogged } = nextProps;
+        if (notification.status) {
+            DropDownHolder.alert(notification.type, notification.title, notification.message);
+            closeNotification();
+        }
+        if (isLogged) {
+            this.handleSigninSuccess();
+        }
+        return false;
+    }
+
+    signInHandler = () => {
+        const { submitSignin } = this.props;
+        submitSignin();
+    }
+
+    handleSigninSuccess = () => {
+        setTimeout(() => {
+            const { navigation } = this.props;
+            navigation.pop();
+        }, 3000);
+    }
+
     render() {
         const { inputStyle, btnStyle, btnNameStyle } = styles;
         return (
-            <View style={{ alignItems: 'center' }}>
-                <TextInput 
-                    style={inputStyle}
-                    placeholder='Enter your email'
-                />
-                <TextInput 
-                    style={inputStyle}
-                    secureTextEntry
-                    placeholder='Enter your password'
-                />
-                <TouchableOpacity style={btnStyle}>
-                    <Text style={btnNameStyle}>SIGN IN NOW</Text>
-                </TouchableOpacity>
-            </View>
+            <KeyboardAvoidingView
+                behavior="padding"
+            >
+                <View style={{ alignItems: 'center' }}>
+                    <TextInput 
+                        style={inputStyle}
+                        placeholder='Enter your email'
+                        onChangeText={this.props.inputEmail}
+                    />
+                    <TextInput 
+                        style={inputStyle}
+                        secureTextEntry
+                        placeholder='Enter your password'
+                        onChangeText={this.props.inputPassword}
+                    />
+                    <TouchableOpacity 
+                        style={btnStyle}
+                        onPress={this.signInHandler}
+                    >
+                        <Text style={btnNameStyle}>SIGN IN NOW</Text>
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -52,3 +92,21 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
 });
+
+function mapStateToProps(state) {
+    return {
+        notification: state.user.authenticate.notification,
+        isLogged: state.user.authenticate.isLogged
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        inputEmail: (email) => dispatch(Actions.inputSigninEmail(email)),
+        inputPassword: (password) => dispatch(Actions.inputSigninPassword(password)),
+        submitSignin: () => dispatch(Actions.submitSignIn()),
+        closeNotification: () => dispatch(Actions.closeNotification())
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
