@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, Dimensions } from 'react-native';
+import { 
+    Text, View, Image, StyleSheet, 
+    Dimensions, TouchableOpacity
+} from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 const bannerImage = require('./../../../../media/temp/banner.jpg');
@@ -9,15 +12,19 @@ export default class Collection extends Component {
         const { wrapper, shadow, textStyle, imageStyle } = styles;
 
         return (
-            <View style={[wrapper, shadow]}>
-                <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={textStyle}>SPRING COLLECTION</Text>
+            <TouchableOpacity 
+                onPress={() => this.props.navigation.navigate('ListProduct', {
+                    collection: true,
+                    nameType: 'SPRING COLLECTION'
+                })}   
+            >
+                <View style={[wrapper, shadow]}>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={textStyle}>SPRING COLLECTION</Text>
+                    </View>
+                    <Image source={bannerImage} style={imageStyle} />
                 </View>
-                {/* <View style={{  }}> */}
-
-                <Image source={bannerImage} style={imageStyle} />
-                {/* </View> */}
-            </View>
+            </TouchableOpacity>
         );
     }
 }

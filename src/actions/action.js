@@ -358,3 +358,25 @@ export function fetchProductByType(idType, page) {
         }).catch(error => console.log('Error while fetching product by type', error));
     };
 }
+
+export function fetchProductInCollectionSuccess(page, data) {
+    return {
+        type: ActionTypes.FETCH_PRODUCT_IN_COLLECTION_SUCCESS,
+        page,
+        data
+    };
+}
+
+export function fetchProductInCollection(page) {
+    return (dispatch) => {
+        const url = `${serverURL}/product/collection?page=${page}`;
+        axios.get(url).then(result => {
+            const { data } = result;
+            console.log(result);
+            if (data.message === 'SUCCESS') {
+                dispatch(fetchProductInCollectionSuccess(page, data.product));
+            }
+        }).catch(error => console.log('Error while fetching product by type', error));
+    };
+}
+

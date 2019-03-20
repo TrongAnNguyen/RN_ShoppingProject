@@ -12,21 +12,43 @@ import icBack from './../../../../media/appIcon/backList.png';
 
 class ListProduct extends Component {
     componentDidMount() {
-        const { navigation, listProduct, fetchProduct } = this.props;
-        const idType = navigation.getParam('idType');
-        if (lang.isEmpty(listProduct[idType])) {
-            fetchProduct(idType, 1);
+        const { 
+            navigation, listProductCategory, fetchProductInCategory,
+            listProductCollection, fetchProductInCollection
+        } = this.props;
+        const idType = navigation.getParam('idType', null);
+        const isCollection = navigation.getParam('collection', false);
+        if (idType !== null && lang.isEmpty(listProductCategory[idType])) {
+            fetchProductInCategory(idType, 1);
         }
-        console.log(listProduct);
+        if (isCollection && lang.isEmpty(listProductCollection)) {
+            fetchProductInCollection(1);
+        }
     }
 
-    renderItem = () => {
-        const { navigation, listProduct } = this.props;
+    renderItemInCategory = () => {
+        const { navigation, listProductCategory } = this.props;
         const idType = navigation.getParam('idType');
         const page = 1;
-        if (lang.isEmpty(listProduct[idType])) return null;
-        const productsByType = listProduct[idType][page];
+        if (lang.isEmpty(listProductCategory[idType])) return null;
+        const productsByType = listProductCategory[idType][page];
         const listItems = Object.keys(productsByType).map(item => productsByType[item]);
+        const listItemsJSX = listItems.map(item => (
+            <ProductItem 
+                key={item.id}
+                navigation={navigation} 
+                product={item}
+            />
+        ));
+        return listItemsJSX;
+    } 
+
+    renderItemInCollection = () => {
+        const { navigation, listProductCollection } = this.props;
+        const page = 1;
+        if (lang.isEmpty(listProductCollection)) return null;
+        const productsInCollection = listProductCollection[page];
+        const listItems = Object.keys(productsInCollection).map(item => productsInCollection[item]);
         const listItemsJSX = listItems.map(item => (
             <ProductItem 
                 key={item.id}
@@ -43,6 +65,7 @@ class ListProduct extends Component {
             } = styles;
         const { navigation } = this.props;
         const nameType = navigation.getParam('nameType');
+        const isCollection = navigation.getParam('collection', false);
 
         return (
             <View style={container}>
@@ -59,7 +82,7 @@ class ListProduct extends Component {
                         <View style={hrStyle} />
                     </View>
                     <View style={wrapperListProduct}>
-                        {this.renderItem()}
+                        {isCollection ? this.renderItemInCollection() : this.renderItemInCategory()}
                     </View>
                 </ScrollView>
             </View>
@@ -114,13 +137,15 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        listProduct: state.product.productByType
+        listProductCategory: state.product.productByType,
+        listProductCollection: state.product.productCollection
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchProduct: (idType, page) => dispatch(Actions.fetchProductByType(idType, page))
+        fetchProductInCategory: (idType, page) => dispatch(Actions.fetchProductByType(idType, page)),
+        fetchProductInCollection: (page) => dispatch(Actions.fetchProductInCollection(page))
     };
 }
 

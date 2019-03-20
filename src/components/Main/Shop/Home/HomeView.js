@@ -15,7 +15,7 @@ class HomeView extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: '#dbdbdb' }}>
                 <ScrollView>
-                    <Collection />
+                    <Collection navigation={this.props.navigation} />
                     <Category navigation={this.props.navigation} />
                     <TopProduct navigation={this.props.navigation} />
                 </ScrollView>
