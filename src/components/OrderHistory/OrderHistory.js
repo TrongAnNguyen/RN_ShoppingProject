@@ -1,28 +1,54 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, ScrollView } from 'react-native';
+import lang from 'lodash/lang';
+import { connect } from 'react-redux';
+import * as Actions from './../../actions/action';
 import Header from './Header';
 import OrderItem from './OrderItem';
 
-export default class OrderHistory extends Component {
+class OrderHistory extends Component {
+    componentDidMount() {
+        this.props.fetchOrderHistory();
+    }
+
+    renderItem = () => {
+        const orderHistoryItems = this.props.orderHistory.data;
+        if (lang.isEmpty(orderHistoryItems)) return null;
+        const listItems = Object.keys(orderHistoryItems).map(item => orderHistoryItems[item]);
+        const listItemsJsx = listItems.map(item => (
+            <OrderItem 
+                key={item.id}
+                id={item.id}
+                datetime={item.date_order}
+                status={item.status}
+                total={item.total}
+            />
+        ));
+        return listItemsJsx;
+    }
+
     render() {
-        const { container } = styles;
         return (
             <View>
                 <Header navigation={this.props.navigation} />
-                <View style={container}>
-                    <OrderItem />
-                    <OrderItem />
-                    <OrderItem />
-                </View>
+                <ScrollView>
+                    {this.renderItem()}
+                </ScrollView>
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        
-        //justifyContent: 'center',
-        //marginHorizontal: 10,
-    }
-});
+function mapStateToProps(state) {
+    return {
+        orderHistory: state.user.orderHistory
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        fetchOrderHistory: () => dispatch(Actions.fetchOrderHistory())
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderHistory);

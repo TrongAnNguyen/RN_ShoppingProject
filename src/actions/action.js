@@ -30,12 +30,6 @@ export function getTopProductSuccess(data) {
     };
 }
 
-// export function getDataFailure() {
-//     return {
-//         type: ActionTypes.FETCHING_DATA_FAILURE
-//     };
-// }
-
 export function fetchProductType() {
     return (dispatch) => {
         dispatch(getProductType());
@@ -306,9 +300,61 @@ export function validateToken() {
             if (data.message === 'VALID_TOKEN') {
                 dispatch(updateUserInfo(data.user));
                 dispatch(signInSuccess());
+                dispatch(updateToken(token));
             }
         }).catch(error => {
             console.log('Error when validate token: ', error);
         });
+    };
+}
+
+export function updateToken(token) {
+    return {
+        type: ActionTypes.UPDATE_TOKEN,
+        token
+    };
+}
+
+export function fetchOrderHistorySuccess(orderHistory) {
+    return {
+        type: ActionTypes.FETCH_ORDER_HISTORY_SUCCESS,
+        orderHistory
+    };
+}
+
+export function fetchOrderHistory() {
+    return (dispatch, getState) => {
+        const { token } = getState().user.authenticate;
+        const url = `${serverURL}/user/order-history`;
+        axios.post(url, {
+            token
+        }).then(result => {
+            const { data } = result;
+            if (data.message === 'SUCCESSFULLY') {
+                dispatch(fetchOrderHistorySuccess(data.orderHistory));
+            }
+        }).catch(error => console.log(`Error while fetching orderHistory: ${error}`));
+    };
+}
+
+export function fetchProductByTypeSuccess(idType, page, data) {
+    return {
+        type: ActionTypes.FETCH_PRODUCT_BY_TYPE_SUCCESS,
+        idType,
+        page,
+        data
+    };
+}
+
+export function fetchProductByType(idType, page) {
+    return (dispatch) => {
+        const url = `${serverURL}/product/bytype?idType=${idType}&page=${page}`;
+        axios.get(url).then(result => {
+            const { data } = result;
+            console.log(result);
+            if (data.message === 'SUCCESS') {
+                dispatch(fetchProductByTypeSuccess(idType, page, data.product));
+            }
+        }).catch(error => console.log('Error while fetching product by type', error));
     };
 }

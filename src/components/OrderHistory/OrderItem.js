@@ -4,23 +4,24 @@ import { View, Text, StyleSheet } from 'react-native';
 export default class OrderItem extends Component {
     render() {
         const { container, itemInfo, infoTextStyle, green, dateColor, priceColor } = styles;
+        const { id, datetime, status, total } = this.props;
         return (
             <View style={container}>
                 <View style={itemInfo}>
                     <Text style={infoTextStyle}>Order id:</Text>
-                    <Text style={green}>orderID</Text>
+                    <Text style={green}>{id}</Text>
                 </View>
                 <View style={itemInfo}>
                     <Text style={infoTextStyle}>Order time:</Text>
-                    <Text style={dateColor}>yyyy-mm-dd hh:mm:ss</Text>
+                    <Text style={dateColor}>{datetime}</Text>
                 </View>
                 <View style={itemInfo}>
                     <Text style={infoTextStyle}>Status:</Text>
-                    <Text style={green}>Pending</Text>
+                    <Text style={green}>{status ? 'Completed' : 'Pending'}</Text>
                 </View>
                 <View style={itemInfo}>
                     <Text style={infoTextStyle}>Total:</Text>
-                    <Text style={priceColor}>300$</Text>
+                    <Text style={priceColor}>{total}$</Text>
                 </View>
             </View>
         );

@@ -15,7 +15,7 @@ class Category extends Component {
         const listCategory = this.props.productTypes.data;
         const result = listCategory.map((category) => 
             <TouchableOpacity 
-                onPress={() => this.props.navigation.navigate('ListProduct')}
+                onPress={() => this.props.navigation.navigate('ListProduct', { idType: category.id, nameType: category.name })}
                 key={category.id}
             >
                 <ImageBackground 

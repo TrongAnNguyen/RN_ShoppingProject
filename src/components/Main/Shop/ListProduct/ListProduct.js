@@ -3,16 +3,46 @@ import {
     View, StyleSheet, ScrollView,
     Image, Text, TouchableOpacity 
 } from 'react-native';
+import { connect } from 'react-redux';
+import lang from 'lodash/lang';
+import * as Actions from './../../../../actions/action';
 import ProductItem from './ProductItem';
 
 import icBack from './../../../../media/appIcon/backList.png';
 
-export default class ListProduct extends Component {
+class ListProduct extends Component {
+    componentDidMount() {
+        const { navigation, listProduct, fetchProduct } = this.props;
+        const idType = navigation.getParam('idType');
+        if (lang.isEmpty(listProduct[idType])) {
+            fetchProduct(idType, 1);
+        }
+        console.log(listProduct);
+    }
+
+    renderItem = () => {
+        const { navigation, listProduct } = this.props;
+        const idType = navigation.getParam('idType');
+        const page = 1;
+        if (lang.isEmpty(listProduct[idType])) return null;
+        const productsByType = listProduct[idType][page];
+        const listItems = Object.keys(productsByType).map(item => productsByType[item]);
+        const listItemsJSX = listItems.map(item => (
+            <ProductItem 
+                key={item.id}
+                navigation={navigation} 
+                product={item}
+            />
+        ));
+        return listItemsJSX;
+    }
+
     render() {
         const { container, header, headerWrapper, headerTitleStyle, wrapper, 
                 shadow, iconStyle, titleStyle, hrStyle, wrapperListProduct 
             } = styles;
         const { navigation } = this.props;
+        const nameType = navigation.getParam('nameType');
 
         return (
             <View style={container}>
@@ -23,17 +53,13 @@ export default class ListProduct extends Component {
                                 <Image source={icBack} style={iconStyle} />
                             </TouchableOpacity>
                             <View style={headerTitleStyle}>
-                                <Text style={titleStyle}>Party Dress</Text> 
+                                <Text style={titleStyle}>{nameType}</Text> 
                             </View>
                         </View>
                         <View style={hrStyle} />
                     </View>
                     <View style={wrapperListProduct}>
-                        <ProductItem navigation={navigation} />
-                        <ProductItem navigation={navigation} />
-                        <ProductItem navigation={navigation} />
-                        <ProductItem navigation={navigation} />
-                        <ProductItem navigation={navigation} />
+                        {this.renderItem()}
                     </View>
                 </ScrollView>
             </View>
@@ -85,3 +111,17 @@ const styles = StyleSheet.create({
         paddingLeft: 10
     }
 });
+
+function mapStateToProps(state) {
+    return {
+        listProduct: state.product.productByType
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        fetchProduct: (idType, page) => dispatch(Actions.fetchProductByType(idType, page))
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListProduct);

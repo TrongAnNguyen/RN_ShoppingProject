@@ -17,7 +17,8 @@ const initialState = {
         type: '',
         title: '',
         message: ''
-    }
+    }, 
+    token: ''
 };
 
 export default function authenticate(state = initialState, action) {
@@ -237,6 +238,13 @@ export default function authenticate(state = initialState, action) {
                     password: '',
                     retypePassword: ''
                 }
+            };
+        }
+        case ActionTypes.UPDATE_TOKEN: 
+        {
+            return {
+                ...state,
+                token: action.token
             };
         }
         default:
