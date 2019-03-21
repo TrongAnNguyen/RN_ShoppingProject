@@ -1,30 +1,38 @@
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, FlatList } from 'react-native';
+import { connect } from 'react-redux';
+import * as Actions from './../../../../actions/action';
+import lang from 'lodash/lang';
 import ProductItem from './../ListProduct/ProductItem';
 
-export default class SearchView extends Component {
-    gotoDetail = () => {
-        const { navigation } = this.props;
-        navigation.navigate('ProductDetail');
+class SearchView extends Component {
+    renderItem = () => {
+        const itemStyle = styles.item;
+        const { navigation, products } = this.props;
+        if (lang.isEmpty(products)) return null;
+        const listItems = Object.keys(products).map(item => products[item]);
+        const listItemsJSX = (
+            <FlatList 
+                data={listItems}
+                keyExtractor={item => item.id.toString()}
+                renderItem={({ item }) => (
+                    <View style={itemStyle}>
+                        <ProductItem 
+                            navigation={navigation} 
+                            product={item}
+                        />
+                    </View>
+                )}
+            />
+        );
+        return listItemsJSX;
     }
 
     render() {
-        const { container, item } = styles;
-        const { navigation } = this.props;
+        const { container } = styles;
         return (
             <ScrollView style={container}>
-                <View style={item}>
-                    <ProductItem navigation={navigation} />
-                </View>
-                <View style={item}>
-                    <ProductItem navigation={navigation} />
-                </View>
-                <View style={item}>
-                    <ProductItem navigation={navigation} />
-                </View>
-                <View style={item}>
-                    <ProductItem navigation={navigation} />
-                </View>
+                {this.renderItem()}
             </ScrollView>
         );
     }
@@ -40,3 +48,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     }
 });
+
+function mapStateToProps(state) {
+    return {
+        products: state.product.search.product
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        fetchProductType: () => dispatch(Actions.fetchProductType()),
+        fetchTopProduct: () => dispatch(Actions.fetchTopProduct()),
+        changeTabNavigator: (selectedTab) => dispatch(Actions.changeTabNavigator(selectedTab))
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchView);

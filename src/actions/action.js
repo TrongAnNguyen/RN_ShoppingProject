@@ -380,3 +380,37 @@ export function fetchProductInCollection(page) {
     };
 }
 
+export function changeTabNavigator(selectedTab) {
+    return {
+        type: ActionTypes.CHANGE_TAB_NAVIGATOR,
+        selectedTab
+    };
+}
+
+export function searchProduct() {
+    return (dispatch, getState) => {
+        const state = getState();
+        const { keyWord } = state.product.search;
+        if (lang.isEmpty(keyWord)) return;
+        const url = `${serverURL}/product/search?key=${keyWord}`;
+        axios.get(url).then(result => {
+            const { data } = result;
+            dispatch(updateSearchResult(data.product));
+        })
+        .catch(error => console.log('Error while searching product: ', error));
+    };
+}
+
+export function inputSearchKeyword(keyword) {
+    return {
+        type: ActionTypes.INPUT_SEARCH_KEYWORD,
+        keyword
+    };
+}
+
+export function updateSearchResult(data) {
+    return {
+        type: ActionTypes.UPDATE_SEARCH_RESULT,
+        data
+    };
+}

@@ -35,7 +35,7 @@ class Shop extends Component {
     
     render() {
         const { iconStyle, titleStyle } = styles;
-        const { selectedTab } = this.state;
+        const { selectedTab, changeTabNavigator } = this.props;
         const numberCartItems = Object.keys(this.props.productCart).length;
         const listTabBar = [
             {
@@ -76,7 +76,7 @@ class Shop extends Component {
                 renderSelectedIcon={() => <Image source={tab.selectedIcon} style={iconStyle} />}
                 badgeText={tab.badgeText}
                 selectedTitleStyle={titleStyle}
-                onPress={() => this.setState({ selectedTab: tab.title })}
+                onPress={() => changeTabNavigator(tab.title)}
             >
                 {tab.component}
             </TabNavigator.Item>
@@ -104,15 +104,16 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        productCart: state.user.productCart.items
+        productCart: state.user.productCart.items,
+        selectedTab: state.screen.selectedTab
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         fetchProductType: () => dispatch(Actions.fetchProductType()),
-        fetchTopProduct: () => dispatch(Actions.fetchTopProduct())
-
+        fetchTopProduct: () => dispatch(Actions.fetchTopProduct()),
+        changeTabNavigator: (selectedTab) => dispatch(Actions.changeTabNavigator(selectedTab))
     };
 }
 

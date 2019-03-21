@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import { 
-            View, 
-            Text, 
-            TouchableOpacity, 
-            Dimensions, 
-            Image, 
-            StyleSheet, 
-            TextInput 
+        View, Text, TouchableOpacity, 
+        Dimensions, Image, StyleSheet, 
+        TextInput, Keyboard
 } from 'react-native';
+import { connect } from 'react-redux';
+import * as Actions from './../../../actions/action';
 
 const { height } = Dimensions.get('window');
 const icMenu = require('./../../../media/appIcon/ic_menu.png');
 const icLogo = require('./../../../media/appIcon/ic_logo.png');
 
-export default class Header extends Component {
+class Header extends Component {
     render() {
+        const { inputSearchKeyword, changeTabNavigator, onSubmitSearch } = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.rowWrapper}>
@@ -33,6 +32,10 @@ export default class Header extends Component {
                 <TextInput 
                     style={styles.textInput} 
                     placeholder='What do you want to buy?'
+                    onFocus={() => changeTabNavigator('Search')}
+                    onChangeText={inputSearchKeyword}
+                    onBlur={Keyboard.dismiss()}
+                    onSubmitEditing={onSubmitSearch}
                 />
             </View>
         );
@@ -67,3 +70,19 @@ const styles = StyleSheet.create({
         fontSize: 20
     }
 });
+
+function mapStateToProps(state) {
+    return {
+        selectedTab: state.screen.selectedTab
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        changeTabNavigator: (selectedTab) => dispatch(Actions.changeTabNavigator(selectedTab)),
+        inputSearchKeyword: (keyword) => dispatch(Actions.inputSearchKeyword(keyword)),
+        onSubmitSearch: () => dispatch(Actions.searchProduct())
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
