@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { 
     View, StyleSheet, ScrollView,
-    Image, Text, TouchableOpacity 
+    Image, Text, TouchableOpacity, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
 import lang from 'lodash/lang';
@@ -33,13 +33,18 @@ class ListProduct extends Component {
         if (lang.isEmpty(listProductCategory[idType])) return null;
         const productsByType = listProductCategory[idType][page];
         const listItems = Object.keys(productsByType).map(item => productsByType[item]);
-        const listItemsJSX = listItems.map(item => (
-            <ProductItem 
-                key={item.id}
-                navigation={navigation} 
-                product={item}
+        const listItemsJSX = (
+            <FlatList 
+                data={listItems}
+                keyExtractor={item => item.id.toString()}
+                renderItem={({ item }) => (
+                    <ProductItem 
+                        navigation={navigation} 
+                        product={item}
+                    />
+                )}
             />
-        ));
+        );
         return listItemsJSX;
     } 
 
@@ -49,13 +54,18 @@ class ListProduct extends Component {
         if (lang.isEmpty(listProductCollection)) return null;
         const productsInCollection = listProductCollection[page];
         const listItems = Object.keys(productsInCollection).map(item => productsInCollection[item]);
-        const listItemsJSX = listItems.map(item => (
-            <ProductItem 
-                key={item.id}
-                navigation={navigation} 
-                product={item}
+        const listItemsJSX = (
+            <FlatList 
+                data={listItems}
+                keyExtractor={item => item.id.toString()}
+                renderItem={({ item }) => (
+                    <ProductItem 
+                        navigation={navigation} 
+                        product={item}
+                    />
+                )}
             />
-        ));
+        );
         return listItemsJSX;
     }
 

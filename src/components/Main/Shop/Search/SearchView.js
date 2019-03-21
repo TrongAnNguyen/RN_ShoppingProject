@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import * as Actions from './../../../../actions/action';
 import lang from 'lodash/lang';
 import ProductItem from './../ListProduct/ProductItem';
 
@@ -55,12 +54,4 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        fetchProductType: () => dispatch(Actions.fetchProductType()),
-        fetchTopProduct: () => dispatch(Actions.fetchTopProduct()),
-        changeTabNavigator: (selectedTab) => dispatch(Actions.changeTabNavigator(selectedTab))
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchView);
+export default connect(mapStateToProps, null)(SearchView);

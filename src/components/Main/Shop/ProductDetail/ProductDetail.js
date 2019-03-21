@@ -176,12 +176,6 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(state) {
-    return {
-        
-    };
-}
-
 function mapDispatchToProps(dispatch) {
     return {
         addToCart: (product) => dispatch(Actions.addToCart(product))

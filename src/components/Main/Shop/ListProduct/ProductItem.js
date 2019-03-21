@@ -20,7 +20,9 @@ export default class ProductItem extends Component {
                     <View style={lastRowStyle}>
                         <Text>Color {product.color}</Text>
                         <View style={colorViewStyle} />
-                        <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product })}>
+                        <TouchableOpacity 
+                            onPress={() => navigation.navigate('ProductDetail', { product })}
+                        >
                             <Text style={showDetailStyle}>Show detail</Text>
                         </TouchableOpacity>
                     </View>

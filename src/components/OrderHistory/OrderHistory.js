@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, FlatList } from 'react-native';
 import lang from 'lodash/lang';
 import { connect } from 'react-redux';
 import * as Actions from './../../actions/action';
@@ -8,23 +8,31 @@ import OrderItem from './OrderItem';
 
 class OrderHistory extends Component {
     componentDidMount() {
-        this.props.fetchOrderHistory();
+        const { orderHistory, fetchOrderHistory } = this.props;
+        if (lang.isEmpty(orderHistory.data)) {
+            fetchOrderHistory();
+        }
     }
 
     renderItem = () => {
         const orderHistoryItems = this.props.orderHistory.data;
         if (lang.isEmpty(orderHistoryItems)) return null;
         const listItems = Object.keys(orderHistoryItems).map(item => orderHistoryItems[item]);
-        const listItemsJsx = listItems.map(item => (
-            <OrderItem 
-                key={item.id}
-                id={item.id}
-                datetime={item.date_order}
-                status={item.status}
-                total={item.total}
+        const listItemsJSX = (
+            <FlatList 
+                data={listItems}
+                keyExtractor={item => item.id.toString()}
+                renderItem={({ item }) => (
+                    <OrderItem 
+                        id={item.id}
+                        datetime={item.date_order}
+                        status={item.status}
+                        total={item.total}
+                    />
+                )}
             />
-        ));
-        return listItemsJsx;
+        );
+        return listItemsJSX;
     }
 
     render() {

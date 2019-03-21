@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { 
+    View, Text, TouchableOpacity, StyleSheet, 
+    ScrollView, FlatList
+} from 'react-native';
 import { connect } from 'react-redux';
 import lang from 'lodash/lang';
 import CartItem from './CartItem';
@@ -16,14 +19,19 @@ class CartView extends Component {
         const cartItems = productCart.items;
         if (lang.isEmpty(cartItems)) return null;
         const listItems = Object.keys(cartItems).map(item => cartItems[item]);
-        const listItemsJsx = listItems.map(item => (
-            <CartItem 
-                key={item.id}
-                navigation={navigation}
-                item={item}
+        const listItemsJSX = (
+            <FlatList 
+                data={listItems}
+                keyExtractor={item => item.id.toString()}
+                renderItem={({ item }) => (
+                    <CartItem 
+                        navigation={navigation}
+                        item={item}
+                    />
+                )}
             />
-        ));
-        return listItemsJsx;
+        );
+        return listItemsJSX;
     }
     
     render() {
