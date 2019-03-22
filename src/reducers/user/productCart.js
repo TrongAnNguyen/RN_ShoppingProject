@@ -4,7 +4,13 @@ import lang from 'lodash/lang';
 
 const initialState = {
     items: {},
-    totalPrice: 0
+    totalPrice: 0,
+    notification: {
+        status: false,
+        type: '',
+        title: '',
+        message: ''
+    }
 };
 
 async function saveCart(productCart) {
@@ -98,6 +104,36 @@ export default function productCart(state = initialState, action) {
         case ActionTypes.GET_PRODUCT_CART_SUCCESS:
         {
             return action.productCart;
+        }
+        case ActionTypes.CLEAR_PRODUCT_CART:
+        {
+            return {
+                ...state,
+                items: {},
+                totalPrice: 0
+            };
+        }
+        case ActionTypes.NOTIFY_PRODUCT_CART_MESSAGE:
+        {
+            const notification = {
+                status: true,
+                type: action.messageType
+            };
+            switch (action.message) {
+                case 'SUCCESS':
+                    notification.title = 'Checkout cart successfully!';
+                    notification.message = '';
+                    break;
+            
+                default:
+                    break;
+            }
+            return {
+                ...state,
+                notification: {
+                    ...notification
+                }
+            };
         }
         default:
             return state;

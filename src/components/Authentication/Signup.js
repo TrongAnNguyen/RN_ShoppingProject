@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { 
     View, Text, TextInput, TouchableOpacity, 
-    StyleSheet, Dimensions, KeyboardAvoidingView
+    StyleSheet, Dimensions, KeyboardAvoidingView, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import DropDownHolder from './../DropDownHolder';
@@ -29,23 +29,27 @@ class Signup extends Component {
                         style={inputStyle}
                         placeholder='Enter your name'
                         onChangeText={this.props.inputFullName}
+                        onBlur={Keyboard.dismiss()}
                     />
                     <TextInput 
                         style={inputStyle}
                         placeholder='Enter your email'
                         onChangeText={this.props.inputEmail}
+                        onBlur={Keyboard.dismiss()}
                     />
                     <TextInput 
                         style={inputStyle}
                         secureTextEntry
                         placeholder='Enter your password'
                         onChangeText={this.props.inputPassword}
+                        onBlur={Keyboard.dismiss()}
                     />
                     <TextInput 
                         style={inputStyle}
                         secureTextEntry
                         placeholder='Re-enter your password'
                         onChangeText={this.props.inputRetypePassword}
+                        onBlur={Keyboard.dismiss()}
                     />
                     <TouchableOpacity 
                         style={btnStyle}

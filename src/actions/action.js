@@ -170,8 +170,9 @@ export function submitSignIn() {
                 {
                     const { user, token } = result.data;
                     dispatch(notifySigninMessage('success', message));
-                    dispatch(updateUserInfo(user));
+                    dispatch(fetchUserInfoSuccess(user));
                     dispatch(signInSuccess());
+                    dispatch(updateToken(token));
                     AsyncStorage.setItem('@Shopping_UserToken', JSON.stringify(token));
                     break;
                 }
@@ -262,9 +263,9 @@ export function submitSignUp() {
     };
 }
 
-export function updateUserInfo(user) {
+export function fetchUserInfoSuccess(user) {
     return {
-        type: ActionTypes.UPDATE_USER_INFO,
+        type: ActionTypes.FETCH_USER_INFO_SUCCESS,
         user
     };
 }
@@ -298,7 +299,7 @@ export function validateToken() {
         }).then(result => {
             const { data } = result;
             if (data.message === 'VALID_TOKEN') {
-                dispatch(updateUserInfo(data.user));
+                dispatch(fetchUserInfoSuccess(data.user));
                 dispatch(signInSuccess());
                 dispatch(updateToken(token));
             }
@@ -351,7 +352,6 @@ export function fetchProductByType(idType, page) {
         const url = `${serverURL}/product/bytype?idType=${idType}&page=${page}`;
         axios.get(url).then(result => {
             const { data } = result;
-            console.log(result);
             if (data.message === 'SUCCESS') {
                 dispatch(fetchProductByTypeSuccess(idType, page, data.product));
             }
@@ -372,7 +372,6 @@ export function fetchProductInCollection(page) {
         const url = `${serverURL}/product/collection?page=${page}`;
         axios.get(url).then(result => {
             const { data } = result;
-            console.log(result);
             if (data.message === 'SUCCESS') {
                 dispatch(fetchProductInCollectionSuccess(page, data.product));
             }
@@ -412,5 +411,120 @@ export function updateSearchResult(data) {
     return {
         type: ActionTypes.UPDATE_SEARCH_RESULT,
         data
+    };
+}
+
+// Update info
+export function inputUpdateFullname(fullName) {
+    return {
+        type: ActionTypes.INPUT_UPDATE_FULLNAME,
+        fullName
+    };
+}
+
+export function inputUpdateAddress(address) {
+    return {
+        type: ActionTypes.INPUT_UPDATE_ADDRESS,
+        address
+    };
+}
+export function inputUpdatePhone(phoneNumber) {
+    return {
+        type: ActionTypes.INPUT_UPDATE_PHONE,
+        phoneNumber
+    };
+}
+
+export function submitUpdateInfo() {
+    return (dispatch, getState) => {
+        const state = getState();
+        let { fullName, address, phoneNumber } = state.user.info.inputUpdate;
+        const currUserInfo = state.user.info;
+        const { token } = state.user.authenticate;
+        const url = `${serverURL}/user/profile`;
+        if (lang.isEmpty(fullName)) {
+            fullName = currUserInfo.fullName;
+        }
+        if (lang.isEmpty(address)) {
+            address = currUserInfo.address;
+        }
+        if (lang.isEmpty(phoneNumber)) {
+            phoneNumber = currUserInfo.phoneNumber;
+        }
+        axios.post(url, {
+            fullName,
+            address,
+            phoneNumber,
+            token
+        }).then(result => {
+            const { message, user } = result.data;
+            switch (message) {
+                case 'SUCCESS':
+                    {
+                        dispatch(fetchUserInfoSuccess(user));
+                        dispatch(notifyUpdateInfoMessage('success', message));
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }).catch(error => {
+            dispatch(notifySigninMessage('error', 'UNKNOW_ERROR'));
+            console.log('Error when post signup requrest: ', error);
+        });
+    };
+}
+
+export function notifyUpdateInfoMessage(messageType, message) {
+    return {
+        type: ActionTypes.NOTIFY_UPDATE_INFO_MESSAGE,
+        messageType,
+        message
+    };
+}
+
+// Checkout
+export function submitCheckout() {
+    return (dispatch, getState) => {
+        const state = getState();
+        const { token } = state.user.authenticate;
+        const { productCart } = state.user;
+        const cartItems = Object.keys(productCart.items).map(item => productCart.items[item]);
+        const { totalPrice } = productCart;
+
+        const url = `${serverURL}/user/checkout`;
+        axios.post(url, {
+            cartItems,
+            totalPrice,
+            token
+        }).then(result => {
+            const { message } = result.data;
+            switch (message) {
+                case 'SUCCESS':
+                {
+                    AsyncStorage.removeItem('@productCart', () => {
+                        dispatch(clearProductCart());
+                    });       
+                    dispatch(notifyProductCartMessage('success', message));
+                    break;
+                }
+                default:
+                    break;
+            }
+        }).catch(error => console.log('Error while submit checkout: ', error));
+    };
+}
+
+export function notifyProductCartMessage(messageType, message) {
+    return {
+        type: ActionTypes.NOTIFY_PRODUCT_CART_MESSAGE,
+        messageType,
+        message
+    };
+}
+
+export function clearProductCart() {
+    return {
+        type: ActionTypes.CLEAR_PRODUCT_CART
     };
 }

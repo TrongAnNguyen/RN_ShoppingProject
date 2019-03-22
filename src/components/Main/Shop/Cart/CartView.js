@@ -5,10 +5,21 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import lang from 'lodash/lang';
+import DropDownHolder from './../../../DropDownHolder';
 import CartItem from './CartItem';
 import * as Actions from './../../../../actions/action';
 
 class CartView extends Component {
+    shouldComponentUpdate(nextProps) {
+        const { closeNotification } = this.props;
+        const { notification } = nextProps;
+        if (notification.status) {
+            DropDownHolder.alert(notification.type, notification.title, notification.message);
+            closeNotification();
+        }
+        return true;
+    }
+
     gotoDetail = () => {
         const { navigation } = this.props;
         navigation.navigate('ProductDetail');
@@ -42,7 +53,10 @@ class CartView extends Component {
                 <ScrollView style={productWrapper}>
                     {this.renderItem()}
                 </ScrollView>
-                <TouchableOpacity style={btnCheckout}>
+                <TouchableOpacity 
+                    style={btnCheckout}
+                    onPress={this.props.submitCheckout}
+                >
                     <Text style={checkoutTitle}>TOTAL {totalPrice}$ CHECKOUT NOW</Text>
                 </TouchableOpacity>
             </View>
@@ -75,7 +89,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        productCart: state.user.productCart
+        productCart: state.user.productCart,
+        notification: state.user.productCart.notification
     };
 }
 
@@ -83,7 +98,9 @@ function mapDispatchToProps(dispatch) {
     return {
         removeFromCart: (productId) => dispatch(Actions.removeFromCart(productId)),
         increaseQuantity: (productId) => dispatch(Actions.increaseQuantity(productId)),
-        decreaseQuantity: (productId) => dispatch(Actions.decreaseQuantity(productId))
+        decreaseQuantity: (productId) => dispatch(Actions.decreaseQuantity(productId)),
+        submitCheckout: () => dispatch(Actions.submitCheckout()),
+        closeNotification: () => dispatch(Actions.closeNotification())
     };
 }
 

@@ -1,27 +1,61 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Dimensions } from 'react-native';
+import { 
+    View, Text, TouchableOpacity, StyleSheet, 
+    TextInput, Dimensions, Keyboard
+} from 'react-native';
+import { connect } from 'react-redux';
+import * as Actions from './../../actions/action';
 import Header from './Header';
+import DropDownHolder from './../DropDownHolder';
 
-export default class ChangeInfo extends Component {
+class ChangeInfo extends Component {
+    shouldComponentUpdate(nextProps) {
+        const { closeNotification } = this.props;
+        const { notification } = nextProps;
+        if (notification.status) {
+            DropDownHolder.alert(notification.type, notification.title, notification.message);
+            closeNotification();
+        }
+        return false;
+    }
+
     render() {
         const { container, inputStyle, btnNameStyle, btnStyle } = styles;
+        const { 
+            userInfo, inputFullName, inputAddress, inputPhoneNumber, 
+            submitUpdate, navigation
+        } = this.props;
+        const { fullName, address, phoneNumber } = userInfo;
         return (
             <View style={{ flex: 1 }}>
-                <Header navigation={this.props.navigation} />
+                <Header navigation={navigation} />
                 <View style={container}>
                     <TextInput 
                         style={inputStyle}
-                        value="An dep trai"
+                        placeholder='Your fullname'
+                        defaultValue={fullName}
+                        onChangeText={inputFullName}
+                        onBlur={Keyboard.dismiss()}
                     />
                     <TextInput 
                         style={inputStyle}
-                        value="ABC duong XYZ"
+                        placeholder='Your address'
+                        defaultValue={address}
+                        onChangeText={inputAddress}
+                        onBlur={Keyboard.dismiss()}
                     />
                     <TextInput 
                         style={inputStyle}
-                        value="0123456789"
+                        placeholder='Your phone number'
+                        defaultValue={phoneNumber}
+                        onChangeText={inputPhoneNumber}
+                        keyboardType="phone-pad"
+                        onBlur={Keyboard.dismiss()}
                     />
-                    <TouchableOpacity style={btnStyle}>
+                    <TouchableOpacity 
+                        style={btnStyle}
+                        onPress={submitUpdate}
+                    >
                         <Text style={btnNameStyle}>CHANGE YOUR INFORMATION</Text>
                     </TouchableOpacity>
                 </View>
@@ -35,7 +69,6 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: 
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -66,3 +99,22 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
 });
+
+function mapStateToProps(state) {
+    return {
+        userInfo: state.user.info,
+        notification: state.user.info.notification
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        inputFullName: (fullName) => dispatch(Actions.inputUpdateFullname(fullName)),
+        inputAddress: (address) => dispatch(Actions.inputUpdateAddress(address)),
+        inputPhoneNumber: (phone) => dispatch(Actions.inputUpdatePhone(phone)),
+        submitUpdate: () => dispatch(Actions.submitUpdateInfo()),
+        closeNotification: () => dispatch(Actions.closeNotification())
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeInfo);
