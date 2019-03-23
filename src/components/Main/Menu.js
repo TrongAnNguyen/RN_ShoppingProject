@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
-import lang from 'lodash/lang';
 import * as Actions from './../../actions/action';
+import styles from './../styles/Main/Menu';
 
 const avatar = require('./../../media/temp/profile.png');
 
@@ -60,50 +60,6 @@ class Menu extends Component {
         );
     }
 }
-
-const { width } = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#34B089',
-        flex: 1,
-        borderRightWidth: 3,
-        borderColor: '#fff',
-        alignItems: 'center'
-    },
-    avatarStyle: {
-        width: 150,
-        height: 150,
-        borderRadius: 75,
-        marginTop: 25
-    },
-    buttonStyle: {
-        height: 60,
-        width: width * 0.53,
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20
-    },
-    btnNameStyle: {
-        color: '#34B089',
-        fontSize: 20
-    },
-    username: {
-        marginTop: 10,
-        fontSize: 18,
-        color: '#fff' 
-    },
-    loggedContainer: {
-        flex: 1, 
-        justifyContent: 'space-between', 
-        alignItems: 'center'
-    },
-    btnContainer: {
-        marginBottom: 100
-    }
-});
 
 function mapStateToProps(state) {
     return {

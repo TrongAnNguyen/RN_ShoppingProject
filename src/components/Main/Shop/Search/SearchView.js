@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, FlatList } from 'react-native';
+import { View, ScrollView, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import lang from 'lodash/lang';
 import ProductItem from './../ListProduct/ProductItem';
+import styles from './../../../styles/Main/Shop/Search/SearchView';
 
 class SearchView extends Component {
     renderItem = () => {
@@ -36,17 +37,6 @@ class SearchView extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 5
-    },
-    item: {
-        marginVertical: 5,
-        alignItems: 'center',
-    }
-});
 
 function mapStateToProps(state) {
     return {

@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { 
-    Text, View, Image, StyleSheet, 
-    Dimensions, TouchableOpacity
-} from 'react-native';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { serverURL } from './../../../../constants/config';
+import styles from './../../../styles/Main/Shop/Home/Collection';
 
-const { width, height } = Dimensions.get('window');
-const bannerImage = require('./../../../../media/temp/banner.jpg');
+const collectionImgUrl = `${serverURL}/product/image/collection/spring`;
 
 export default class Collection extends Component {
     render() {
@@ -22,37 +20,9 @@ export default class Collection extends Component {
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <Text style={textStyle}>SPRING COLLECTION</Text>
                     </View>
-                    <Image source={bannerImage} style={imageStyle} />
+                    <Image source={{ uri: collectionImgUrl }} style={imageStyle} />
                 </View>
             </TouchableOpacity>
         );
     }
 }
-
-const imageWidth = width - 40;
-const imageHeight = (imageWidth * 465) / 933;
-const styles = StyleSheet.create({
-    wrapper: {
-        height: height / 3,
-        backgroundColor: '#fff',
-        margin: 10,
-        padding: 10,
-        paddingTop: 0
-    },
-    shadow: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        elevation: 3
-    },
-    textStyle: {
-        fontSize: 20,
-        color: '#afafaf',
-    },
-    imageStyle: {
-        height: imageHeight,
-        width: imageWidth,
-        flex: 4,
-        resizeMode: 'cover'
-    }
-});

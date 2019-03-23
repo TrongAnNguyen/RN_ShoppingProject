@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { 
-    View, Text, TouchableOpacity, StyleSheet, 
-    ScrollView, FlatList
+    View, Text, TouchableOpacity, 
+    ScrollView, FlatList, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import lang from 'lodash/lang';
 import DropDownHolder from './../../../DropDownHolder';
 import CartItem from './CartItem';
 import * as Actions from './../../../../actions/action';
+import styles from './../../../styles/Main/Shop/Cart/CartView';
 
 class CartView extends Component {
     shouldComponentUpdate(nextProps) {
@@ -23,6 +24,25 @@ class CartView extends Component {
     gotoDetail = () => {
         const { navigation } = this.props;
         navigation.navigate('ProductDetail');
+    }
+
+    handleSubmit = () => {
+        Alert.alert(
+            'Checkout',
+            'Do you confirm to checkout?',
+            [
+                {
+                  text: 'Yes', 
+                  onPress: () => this.props.submitCheckout()
+                },
+                {
+                    text: 'Cancel',
+                    onPress: null,
+                    style: 'cancel',
+                },
+            ],
+            { cancelable: false },
+          );
     }
 
     renderItem = () => {
@@ -47,45 +67,30 @@ class CartView extends Component {
     
     render() {
         const { container, productWrapper, checkoutTitle, btnCheckout } = styles;
-        const { totalPrice } = this.props.productCart;
+        const { totalPrice, items } = this.props.productCart;
         return (
             <View style={container}>
                 <ScrollView style={productWrapper}>
                     {this.renderItem()}
                 </ScrollView>
-                <TouchableOpacity 
-                    style={btnCheckout}
-                    onPress={this.props.submitCheckout}
-                >
-                    <Text style={checkoutTitle}>TOTAL {totalPrice}$ CHECKOUT NOW</Text>
-                </TouchableOpacity>
+                {
+                    lang.isEmpty(items) ? (
+                        <View style={btnCheckout}>
+                            <Text style={checkoutTitle}>TOTAL {totalPrice}$ CHECKOUT NOW</Text>
+                        </View>
+                    ) : (
+                        <TouchableOpacity 
+                            style={btnCheckout}
+                            onPress={() => this.handleSubmit()}
+                        >
+                            <Text style={checkoutTitle}>TOTAL {totalPrice}$ CHECKOUT NOW</Text>
+                        </TouchableOpacity>
+                    )
+                }
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    productWrapper: {
-        flex: 1
-    },
-    checkoutTitle: {
-        color: '#FFF',
-        fontSize: 15,
-        fontWeight: 'bold',
-        fontFamily: 'Avenir'
-    },
-    btnCheckout: {
-        height: 50,
-        margin: 10,
-        backgroundColor: '#2ABB9C',
-        borderRadius: 2,
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-});
 
 function mapStateToProps(state) {
     return {

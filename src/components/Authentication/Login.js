@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { 
     View, Text, TextInput, TouchableOpacity, 
-    StyleSheet, Dimensions, KeyboardAvoidingView, Keyboard
+    KeyboardAvoidingView, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import DropDownHolder from './../DropDownHolder';
 import * as Actions from './../../actions/action';
+import styles from './../styles/Authentication/Login';
 
 class Login extends Component {
     shouldComponentUpdate(nextProps) {
@@ -62,36 +63,6 @@ class Login extends Component {
         );
     }
 }
-
-const { width } = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-    inputStyle: {
-        backgroundColor: '#fff',
-        width: width * 0.8,
-        height: 50,
-        margin: 10,
-        borderRadius: 20,
-        paddingLeft: 15,
-        fontSize: 18
-    },
-    btnStyle: {
-        backgroundColor: 'transparent',
-        borderWidth: 2,
-        borderColor: '#fff',
-        width: width * 0.8,
-        height: 50,
-        borderRadius: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 30,
-
-    },
-    btnNameStyle: {
-        color: '#fff',
-        fontSize: 18
-    },
-});
 
 function mapStateToProps(state) {
     return {

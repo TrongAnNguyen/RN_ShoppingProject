@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { 
-    View, Text, TouchableOpacity, StyleSheet, 
-    TextInput, Dimensions, Keyboard
+    View, Text, TouchableOpacity, 
+    TextInput, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Actions from './../../actions/action';
 import Header from './Header';
 import DropDownHolder from './../DropDownHolder';
+import styles from './../styles/ChangeInfo/ChangeInfo';
 
 class ChangeInfo extends Component {
     shouldComponentUpdate(nextProps) {
@@ -63,42 +64,6 @@ class ChangeInfo extends Component {
         );
     }
 }
-
-const { width } = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    inputStyle: {
-        backgroundColor: '#fff',
-        width: width * 0.8,
-        height: 50,
-        margin: 10,
-        borderRadius: 20,
-        paddingLeft: 15,
-        fontSize: 18,
-        borderWidth: 1,
-        borderColor: '#34B089'
-    },
-    btnStyle: {
-        backgroundColor: '#34B089',
-        borderColor: '#fff',
-        width: width * 0.8,
-        height: 50,
-        borderRadius: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 30,
-
-    },
-    btnNameStyle: {
-        color: '#fff',
-        fontSize: 18
-    },
-});
 
 function mapStateToProps(state) {
     return {

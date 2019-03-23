@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { 
-        View, Text, TouchableOpacity, 
-        Dimensions, Image, StyleSheet, 
-        TextInput, Keyboard
+    View, Text, TouchableOpacity, Image, 
+    TextInput, Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Actions from './../../../actions/action';
+import styles from './../../styles/Main/Shop/Header';
 
-const { height } = Dimensions.get('window');
 const icMenu = require('./../../../media/appIcon/ic_menu.png');
 const icLogo = require('./../../../media/appIcon/ic_logo.png');
 
@@ -41,35 +40,6 @@ class Header extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        height: height / 7.5,
-        backgroundColor: '#34B089',
-        padding: 10,
-        justifyContent: 'space-around'
-    },
-    iconStyle: {
-        width: 25,
-        height: 25
-    },
-    rowWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    textInput: {
-        height: height / 23,
-        backgroundColor: '#fff',
-        fontSize: 17,
-        paddingLeft: 20,
-        paddingTop: 0,
-        paddingBottom: 0
-    },
-    titleStyle: {
-        color: '#fff',
-        fontSize: 20
-    }
-});
 
 function mapStateToProps(state) {
     return {

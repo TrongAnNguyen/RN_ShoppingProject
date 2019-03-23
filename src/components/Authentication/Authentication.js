@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import * as Actions from './../../actions/action';
 import Header from './Header';
 import Login from './Login';
 import Signup from './Signup';
 import Tabbar from './Tabbar';
+import styles from './../styles/Authentication/Authentication';
 
 class Authentication extends Component {
     constructor(props) {
@@ -39,16 +40,6 @@ class Authentication extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#34B089', 
-        alignItems: 'center',
-        paddingTop: 40,
-        justifyContent: 'space-between'
-    },
-});
 
 function mapDispatchToProps(dispatch) {
     return {

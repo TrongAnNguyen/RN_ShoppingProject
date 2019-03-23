@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, StyleSheet, Image,
-        FlatList, Dimensions, Text, ScrollView
-    } from 'react-native';
+import { 
+    View, TouchableOpacity, Image,
+    FlatList, Text, ScrollView
+} from 'react-native';
 import { connect } from 'react-redux';
 import * as Actions from './../../../../actions/action';
 import { serverURL } from './../../../../constants/config';
+import styles from './../../../styles/Main/Shop/ProductDetail/ProductDetail';
 
 const imgUrl = `${serverURL}/product/image/`;
-
 const icBack = require('./../../../../media/appIcon/back.png');
 const icCartFull = require('./../../../../media/appIcon/cartfull.png');
 
@@ -85,96 +86,6 @@ class ProductDetail extends Component {
         );
     }
 }
-
-const { width } = Dimensions.get('window');
-const swiperWidth = (width / 1.8) - 30;
-const swiperHeight = (swiperWidth * 452) / 361;
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#fff',
-        margin: 10,
-        padding: 10,
-        flex: 1
-    },
-    header: {
-        height: 40,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    iconStyle: {
-        width: 25,
-        height: 25
-    },
-    productContainer: {
-        marginTop: 10,
-    },
-    productImageStyle: {
-        width: swiperWidth,
-        height: swiperHeight,
-        marginHorizontal: 5
-    },
-    descriptionHeader: {
-        justifyContent: 'center'
-    },
-    titleContainer: {
-        flexDirection: 'row',
-
-    },
-    titleName: {
-        color: '#3F3F46',
-        fontSize: 20,
-        fontWeight: 'bold',
-        paddingLeft: 10
-    },
-    titleHighlight: {
-        fontSize: 20,
-        color: '#7D59C8',
-        paddingHorizontal: 3
-    },
-    titlePrice: {
-        fontSize: 20,
-        color: '#9A9A9A'
-    },
-    hrStyle: {
-        height: 1,
-        backgroundColor: '#dbdbdb',
-        marginVertical: 10
-    },
-    description: {
-
-    },
-    txtDescriptStyle: {
-        color: '#AFAFAF'
-    },
-    lastRowStyle: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    colorInfo: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    color: {
-        height: 15, 
-        width: 15,
-        borderRadius: 7.5,
-        marginHorizontal: 7
-    },
-    txtColor: {
-        color: '#C21C70',
-        fontSize: 15,
-        fontWeight: '400',
-        //fontFamily: 'Avenir'
-    },
-    txtMaterial: {
-        color: '#C21C70',
-        fontSize: 15,
-        fontWeight: '400',
-        //fontFamily: 'Avenir'
-    }
-});
 
 function mapDispatchToProps(dispatch) {
     return {

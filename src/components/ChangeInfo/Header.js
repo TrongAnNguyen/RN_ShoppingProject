@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
-import { 
-            View, 
-            Text, 
-            TouchableOpacity, 
-            Dimensions, 
-            Image, 
-            StyleSheet, 
-} from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import styles from './../styles/ChangeInfo/Header';
 
 const icBackWhite = require('./../../media/appIcon/back_white.png');
 const icLogo = require('./../../media/appIcon/ic_logo.png');
-
-const { height } = Dimensions.get('window');
 
 export default class Header extends Component {
     render() {
@@ -35,24 +27,3 @@ export default class Header extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        height: height / 8.5,
-        backgroundColor: '#34B089',
-        padding: 10,
-        justifyContent: 'space-around'
-    },
-    iconStyle: {
-        width: 40,
-        height: 40
-    },
-    rowWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    titleStyle: {
-        color: '#fff',
-        fontSize: 20,
-    }
-});

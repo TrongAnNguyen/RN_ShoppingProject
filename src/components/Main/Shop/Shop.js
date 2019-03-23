@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TabNavigator from 'react-native-tab-navigator';
-import { View, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Image } from 'react-native';
 import { connect } from 'react-redux';
 import * as Actions from './../../../actions/action';
 import Cart from './Cart/Cart';
@@ -8,6 +8,7 @@ import Search from './Search/Search';
 import Home from './Home/Home';
 import Contact from './Contact/Contact';
 import Header from './Header';
+import styles from './../../styles/Main/Shop/Shop';
 
 const homeIcon = require('./../../../media/appIcon/home0.png');
 const homeSIcon = require('./../../../media/appIcon/home.png');
@@ -18,16 +19,7 @@ const searchSIcon = require('./../../../media/appIcon/search.png');
 const contactIcon = require('./../../../media/appIcon/contact0.png');
 const contactSIcon = require('./../../../media/appIcon/contact.png');
 
-const { height, width } = Dimensions.get('window');
-
 class Shop extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedTab: 'Home'
-        };
-    }
-
     componentDidMount() {
         this.props.fetchProductType();
         this.props.fetchTopProduct();
@@ -91,16 +83,6 @@ class Shop extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    iconStyle: {
-        width: width / 20,
-        height: height / 30
-    },
-    titleStyle: {
-        color: '#34b089'
-    }
-});
 
 function mapStateToProps(state) {
     return {

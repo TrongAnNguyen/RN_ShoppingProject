@@ -52,6 +52,7 @@ export function fetchTopProduct() {
     };
 }
 
+// Product Cart
 export function addToCart(product) {
     return {
         type: ActionTypes.ADD_TO_CART,
@@ -96,30 +97,10 @@ export function getProductCart() {
     };
 }
 
+// Signin
 export function signInSuccess() {
     return {
         type: ActionTypes.SIGN_IN_SUCCESS
-    };
-}
-
-export function inputSignUpFullName(fullName) {
-    return {
-        type: ActionTypes.INPUT_SIGN_UP_FULL_NAME,
-        fullName
-    };
-}
-
-export function inputSignUpEmail(email) {
-    return {
-        type: ActionTypes.INPUT_SIGN_UP_EMAIL,
-        email
-    };
-}
-
-export function inputSignUpPassword(password) {
-    return {
-        type: ActionTypes.INPUT_SIGN_UP_PASSWORD,
-        password
     };
 }
 
@@ -134,13 +115,6 @@ export function inputSigninPassword(password) {
     return {
         type: ActionTypes.INPUT_SIGN_IN_PASSWORD,
         password
-    };
-}
-
-export function inputSignUpRetypePassword(retypePassword) {
-    return {
-        type: ActionTypes.INPUT_SIGN_UP_RETYPE_PASSWORD,
-        retypePassword
     };
 }
 
@@ -186,14 +160,6 @@ export function submitSignIn() {
     };
 }
 
-export function notifySignupMessage(messageType, message) {
-    return {
-        type: ActionTypes.NOTIFY_SIGNUP_MESSAGE,
-        messageType,
-        message
-    };
-}
-
 export function notifySigninMessage(messageType, message) {
     return {
         type: ActionTypes.NOTIFY_SIGNIN_MESSAGE,
@@ -202,9 +168,32 @@ export function notifySigninMessage(messageType, message) {
     };
 }
 
-export function closeNotification() {
+// Signup
+export function inputSignUpFullName(fullName) {
     return {
-        type: ActionTypes.CLOSE_NOTIFICATION
+        type: ActionTypes.INPUT_SIGN_UP_FULL_NAME,
+        fullName
+    };
+}
+
+export function inputSignUpEmail(email) {
+    return {
+        type: ActionTypes.INPUT_SIGN_UP_EMAIL,
+        email
+    };
+}
+
+export function inputSignUpPassword(password) {
+    return {
+        type: ActionTypes.INPUT_SIGN_UP_PASSWORD,
+        password
+    };
+}
+
+export function inputSignUpRetypePassword(retypePassword) {
+    return {
+        type: ActionTypes.INPUT_SIGN_UP_RETYPE_PASSWORD,
+        retypePassword
     };
 }
 
@@ -260,6 +249,21 @@ export function submitSignUp() {
             dispatch(notifySignupMessage('error', 'UNKNOW_ERROR'));
             console.log('Error when post signup requrest: ', error);
         });
+    };
+}
+
+export function notifySignupMessage(messageType, message) {
+    return {
+        type: ActionTypes.NOTIFY_SIGNUP_MESSAGE,
+        messageType,
+        message
+    };
+}
+
+
+export function closeNotification() {
+    return {
+        type: ActionTypes.CLOSE_NOTIFICATION
     };
 }
 

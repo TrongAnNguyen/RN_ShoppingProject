@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
+import styles from './../styles/OrderHistory/OrderItem';
 
 export default class OrderItem extends Component {
     render() {
@@ -27,30 +28,3 @@ export default class OrderItem extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#FFF',
-        margin: 10,
-        justifyContent: 'space-around',
-        height: 100,
-        padding: 10
-    },
-    itemInfo: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    infoTextStyle: {
-        color: '#90949b'
-    },
-    green: {
-        color: '#00e6ac'
-    },
-    dateColor: {
-        color: '#cc0066'
-    },
-    priceColor: {
-        color: '#cc0066',
-        fontWeight: 'bold'
-    }
-});

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { 
-    View, StyleSheet, ScrollView,
-    Image, Text, TouchableOpacity, FlatList
+    View, ScrollView, Image, Text, 
+    TouchableOpacity, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
 import lang from 'lodash/lang';
 import * as Actions from './../../../../actions/action';
 import ProductItem from './ProductItem';
+import styles from './../../../styles/Main/Shop/ListProduct/ListProduct';
 
 import icBack from './../../../../media/appIcon/backList.png';
 
@@ -99,51 +100,6 @@ class ListProduct extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#dbdbdb'
-    },
-    header: {
-        height: 50,
-        paddingTop: 5,
-        justifyContent: 'space-between',
-    },
-    headerWrapper: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    headerTitleStyle: {
-        width: '90%',
-        alignItems: 'center',
-    },
-    wrapper: {
-        backgroundColor: '#fff',
-        margin: 10
-    },
-    shadow: {
-        shadowColor: '#2e272b',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.2,
-        elevation: 3
-    },
-    iconStyle: {
-        width: 25,
-        height: 25
-    },
-    titleStyle: {
-        color: '#B10D65',
-        fontSize: 20
-    },
-    hrStyle: {
-        height: 1,
-        backgroundColor: '#dbdbdb',
-    },
-    wrapperListProduct: {
-        paddingLeft: 10
-    }
-});
 
 function mapStateToProps(state) {
     return {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Dimensions, Image } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import styles from './../../../styles/Main/Shop/Contact/Contact';
 
 import phoneIcon from './../../../../media/appIcon/phone.png';
 import mailIcon from './../../../../media/appIcon/mail.png';
@@ -15,7 +16,6 @@ export default class Contact extends Component {
         return (
             <View style={container}>
                 <View style={mapContainer}>
-                    {/* <Image source={map} style={mapStyle} /> */}
                     <MapView
                         style={mapStyle}
                         initialRegion={{
@@ -59,49 +59,3 @@ export default class Contact extends Component {
         );
     }
 }
-
-const { width } = Dimensions.get('window');
-const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-        flex: 1
-    },
-    mapContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 2,
-        shadowColor: '#3B5458',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.2,
-        elevation: 2
-    },
-    mapStyle: {
-        height: 220,
-        width: undefined,
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    iconStyle: {
-        width: 30,
-        height: 30
-    },
-    infoContainer: {
-        marginTop: 10,
-        backgroundColor: '#fff',
-        padding: 5
-    },  
-    infoWrapper: {
-        height: 50,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderBottomWidth: 1,
-        borderColor: '#D6D6D6'
-    },
-    textStyle: {
-        fontFamily: 'Avenir',
-        color: '#AE005E',
-        fontWeight: '400'
-    }
-});
