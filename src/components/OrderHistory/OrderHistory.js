@@ -8,10 +8,8 @@ import OrderItem from './OrderItem';
 
 class OrderHistory extends Component {
     componentDidMount() {
-        const { orderHistory, fetchOrderHistory } = this.props;
-        if (lang.isEmpty(orderHistory.data)) {
-            fetchOrderHistory();
-        }
+        const { fetchOrderHistory } = this.props;
+        fetchOrderHistory();
     }
 
     renderItem = () => {

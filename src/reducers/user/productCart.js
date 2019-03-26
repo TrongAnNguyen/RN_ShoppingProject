@@ -135,6 +135,18 @@ export default function productCart(state = initialState, action) {
                 }
             };
         }
+        case ActionTypes.CLOSE_CHECKOUT_NOTIFICATION:
+        {
+            return {
+                ...state,
+                notification: {
+                    status: false,
+                    type: '',
+                    title: '',
+                    message: ''
+                }
+            };
+        }
         default:
             return state;
     }

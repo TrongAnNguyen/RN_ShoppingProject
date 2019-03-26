@@ -77,7 +77,7 @@ function mapDispatchToProps(dispatch) {
         inputPassword: (password) => dispatch(Actions.inputSignUpPassword(password)),
         inputRetypePassword: (retypePassword) => dispatch(Actions.inputSignUpRetypePassword(retypePassword)),
         submitSignUp: () => dispatch(Actions.submitSignUp()),
-        closeNotification: () => dispatch(Actions.closeNotification())
+        closeNotification: () => dispatch(Actions.closeAuthenticateNotification())
     };
 }
 

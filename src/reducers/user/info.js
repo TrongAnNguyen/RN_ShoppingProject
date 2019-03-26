@@ -80,6 +80,18 @@ export default function info(state = initialState, action) {
                 }
             };
         }
+        case ActionTypes.CLOSE_UPDATE_INFO_NOTIFICATION:
+        {
+            return {
+                ...state,
+                notification: {
+                    status: false,
+                    type: '',
+                    title: '',
+                    message: ''
+                }
+            };
+        }
         default:
             return state;
     }

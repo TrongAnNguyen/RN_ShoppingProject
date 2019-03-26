@@ -261,9 +261,9 @@ export function notifySignupMessage(messageType, message) {
 }
 
 
-export function closeNotification() {
+export function closeAuthenticateNotification() {
     return {
-        type: ActionTypes.CLOSE_NOTIFICATION
+        type: ActionTypes.CLOSE_AUTHENTICATE_NOTIFICATION
     };
 }
 
@@ -487,6 +487,12 @@ export function notifyUpdateInfoMessage(messageType, message) {
     };
 }
 
+export function closeUpdateInfoNotification() {
+    return {
+        type: ActionTypes.CLOSE_UPDATE_INFO_NOTIFICATION
+    };
+}
+
 // Checkout
 export function submitCheckout() {
     return (dispatch, getState) => {
@@ -530,5 +536,11 @@ export function notifyProductCartMessage(messageType, message) {
 export function clearProductCart() {
     return {
         type: ActionTypes.CLEAR_PRODUCT_CART
+    };
+}
+
+export function closeCheckoutNotification() {
+    return {
+        type: ActionTypes.CLOSE_CHECKOUT_NOTIFICATION
     };
 }

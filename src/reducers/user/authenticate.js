@@ -179,7 +179,7 @@ export default function authenticate(state = initialState, action) {
                 }
             };
         }
-        case ActionTypes.CLOSE_NOTIFICATION: {
+        case ActionTypes.CLOSE_AUTHENTICATE_NOTIFICATION: {
             return {
                 ...state,
                 notification: {

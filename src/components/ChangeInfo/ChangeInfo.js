@@ -78,7 +78,7 @@ function mapDispatchToProps(dispatch) {
         inputAddress: (address) => dispatch(Actions.inputUpdateAddress(address)),
         inputPhoneNumber: (phone) => dispatch(Actions.inputUpdatePhone(phone)),
         submitUpdate: () => dispatch(Actions.submitUpdateInfo()),
-        closeNotification: () => dispatch(Actions.closeNotification())
+        closeNotification: () => dispatch(Actions.closeUpdateInfoNotification())
     };
 }
 

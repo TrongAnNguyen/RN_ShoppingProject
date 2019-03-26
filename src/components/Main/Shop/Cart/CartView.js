@@ -105,7 +105,7 @@ function mapDispatchToProps(dispatch) {
         increaseQuantity: (productId) => dispatch(Actions.increaseQuantity(productId)),
         decreaseQuantity: (productId) => dispatch(Actions.decreaseQuantity(productId)),
         submitCheckout: () => dispatch(Actions.submitCheckout()),
-        closeNotification: () => dispatch(Actions.closeNotification())
+        closeNotification: () => dispatch(Actions.closeCheckoutNotification())
     };
 }
 

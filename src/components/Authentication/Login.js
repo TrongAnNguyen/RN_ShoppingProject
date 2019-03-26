@@ -76,7 +76,7 @@ function mapDispatchToProps(dispatch) {
         inputEmail: (email) => dispatch(Actions.inputSigninEmail(email)),
         inputPassword: (password) => dispatch(Actions.inputSigninPassword(password)),
         submitSignin: () => dispatch(Actions.submitSignIn()),
-        closeNotification: () => dispatch(Actions.closeNotification())
+        closeNotification: () => dispatch(Actions.closeAuthenticateNotification())
     };
 }
 
