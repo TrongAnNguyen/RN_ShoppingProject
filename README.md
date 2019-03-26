@@ -5,6 +5,8 @@
 - View product detail
 - Add to cart
 - Modify cart
+- Checkout
+- Show order history
 - Search product by name
 
 ## Demo
