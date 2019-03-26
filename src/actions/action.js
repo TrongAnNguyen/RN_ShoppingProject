@@ -497,7 +497,11 @@ export function closeUpdateInfoNotification() {
 export function submitCheckout() {
     return (dispatch, getState) => {
         const state = getState();
-        const { token } = state.user.authenticate;
+        const { token, isLogged } = state.user.authenticate;
+        if (!isLogged) {
+            dispatch(notifyProductCartMessage('warn', 'REQUEST_LOGIN'));
+            return;
+        }
         const { productCart } = state.user;
         const cartItems = Object.keys(productCart.items).map(item => productCart.items[item]);
         const { totalPrice } = productCart;

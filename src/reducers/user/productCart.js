@@ -124,7 +124,10 @@ export default function productCart(state = initialState, action) {
                     notification.title = 'Checkout cart successfully!';
                     notification.message = '';
                     break;
-            
+                case 'REQUEST_LOGIN':
+                    notification.title = 'You need to login to checkout your cart!';
+                    notification.message = 'Please login first to checkout your cart.';
+                    break;
                 default:
                     break;
             }
